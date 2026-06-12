@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misaki Anti Pédophile</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    overflow:hidden;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(-45deg,#020024,#090979,#000428,#240046);
+    background-size:400% 400%;
+    animation:galaxy 15s ease infinite;
+    position:relative;
+}
+
+@keyframes galaxy{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.stars{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background-image:radial-gradient(white 1px, transparent 1px);
+    background-size:50px 50px;
+    opacity:0.6;
+    pointer-events:none;
+}
+
+.container{
+    text-align:center;
+    z-index:2;
+}
+
+h1{
+    color:white;
+    font-size:3rem;
+    margin-bottom:30px;
+    text-shadow:0 0 20px #fff;
+}
+
+/* Personnage anime */
+.anime-girl{
+    width:220px;
+    height:320px;
+    margin:auto;
+    position:relative;
+    animation:bounce 3s ease-in-out infinite;
+}
+
+.head{
+    width:120px;
+    height:120px;
+    background:#ffd8c2;
+    border-radius:50%;
+    margin:auto;
+    position:relative;
+}
+
+.hair{
+    width:140px;
+    height:130px;
+    background:#ff69b4;
+    border-radius:50%;
+    position:absolute;
+    top:-10px;
+    left:-10px;
+    z-index:-1;
+}
+
+.eye{
+    width:12px;
+    height:12px;
+    background:black;
+    border-radius:50%;
+    position:absolute;
+    top:50px;
+}
+
+.eye.left{
+    left:35px;
+}
+
+.eye.right{
+    right:35px;
+}
+
+.smile{
+    width:40px;
+    height:20px;
+    border-bottom:4px solid black;
+    border-radius:0 0 40px 40px;
+    position:absolute;
+    bottom:25px;
+    left:40px;
+}
+
+.body{
+    width:100px;
+    height:160px;
+    background:#8a2be2;
+    margin:auto;
+    border-radius:20px;
+    margin-top:-10px;
+}
+
+@keyframes bounce{
+    0%,100%{
+        transform:translateY(0px);
+    }
+    50%{
+        transform:translateY(-15px);
+    }
+}
+
+.buttons{
+    margin-top:30px;
+    display:flex;
+    gap:20px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.btn{
+    position:relative;
+    padding:15px 35px;
+    border:none;
+    border-radius:50px;
+    font-size:18px;
+    font-weight:bold;
+    color:white;
+    cursor:pointer;
+    text-decoration:none;
+    overflow:hidden;
+    transition:0.3s;
+    background:linear-gradient(45deg,#ff69b4,#a855f7);
+    box-shadow:0 0 20px rgba(255,255,255,0.5);
+}
+
+.btn:hover{
+    transform:scale(1.08);
+}
+
+.btn::before{
+    content:"🌸";
+    position:absolute;
+    left:-20px;
+    top:50%;
+    transform:translateY(-50%);
+    animation:flower1 3s linear infinite;
+}
+
+.btn::after{
+    content:"🌸";
+    position:absolute;
+    right:-20px;
+    top:50%;
+    transform:translateY(-50%);
+    animation:flower2 3s linear infinite;
+}
+
+@keyframes flower1{
+    from{
+        transform:translateY(-50%) rotate(0deg);
+    }
+    to{
+        transform:translateY(-50%) rotate(360deg);
+    }
+}
+
+@keyframes flower2{
+    from{
+        transform:translateY(-50%) rotate(360deg);
+    }
+    to{
+        transform:translateY(-50%) rotate(0deg);
+    }
+}
+
+/* Footer */
+.footer{
+    position:absolute;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    text-align:center;
+    z-index:2;
+}
+
+.footer p{
+    color:white;
+    font-size:14px;
+    margin-bottom:10px;
+    text-shadow:0 0 10px rgba(255,255,255,0.8);
+}
+
+.corp-btn{
+    display:inline-block;
+    padding:10px 25px;
+    text-decoration:none;
+    color:white;
+    font-weight:bold;
+    border-radius:30px;
+    background:linear-gradient(45deg,#00c6ff,#0072ff);
+    box-shadow:0 0 15px rgba(0,114,255,0.6);
+    transition:0.3s;
+}
+
+.corp-btn:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 25px rgba(0,114,255,1);
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<div class="container">
+
+    <h1>🌸 Misaki Anti Pédophile 🌸</h1>
+
+    <div class="anime-girl">
+        <div class="head">
+            <div class="hair"></div>
+            <div class="eye left"></div>
+            <div class="eye right"></div>
+            <div class="smile"></div>
+        </div>
+        <div class="body"></div>
+    </div>
+
+    <div class="buttons">
+
+        <a class="btn"
+           href="https://discord.gg/mM8rB44a9k"
+           target="_blank">
+            Misaki Anti Pédophile
+        </a>
+
+        <a class="btn"
+           href="https://discord.gg/DrkezfTVqZ"
+           target="_blank">
+            Misaki
+        </a>
+
+    </div>
+
+</div>
+
+<footer class="footer">
+
+    <p>© 2026 MathiX Games Corporation - Tous droits réservés</p>
+
+    <a class="corp-btn"
+       href="https://mathix224.github.io/MathiX-Games-Corporation/"
+       target="_blank">
+        Visiter MathiX Games Corporation
+    </a>
+
+</footer>
+
+</body>
+</html>
