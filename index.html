@@ -1,233 +1,221 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Misaki Anti Pédophile</title>
-
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
-}
-
-body{
-    overflow:hidden;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(-45deg,#020024,#090979,#000428,#240046);
-    background-size:400% 400%;
-    animation:galaxy 15s ease infinite;
-    position:relative;
-}
-
-@keyframes galaxy{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
-}
-
-.stars{
-    position:absolute;
-    width:100%;
-    height:100%;
-    background-image:
-    radial-gradient(white 1px, transparent 1px);
-    background-size:50px 50px;
-    opacity:0.6;
-}
-
-.container{
-    text-align:center;
-    z-index:2;
-}
-
-h1{
-    color:white;
-    font-size:3rem;
-    margin-bottom:30px;
-    text-shadow:0 0 20px #fff;
-}
-
-/* Personnage anime */
-.anime-girl{
-    width:220px;
-    height:320px;
-    margin:auto;
-    position:relative;
-    animation:bounce 3s ease-in-out infinite;
-}
-
-.head{
-    width:120px;
-    height:120px;
-    background:#ffd8c2;
-    border-radius:50%;
-    margin:auto;
-    position:relative;
-}
-
-.hair{
-    width:140px;
-    height:130px;
-    background:#ff69b4;
-    border-radius:50%;
-    position:absolute;
-    top:-10px;
-    left:-10px;
-    z-index:-1;
-}
-
-.eye{
-    width:12px;
-    height:12px;
-    background:black;
-    border-radius:50%;
-    position:absolute;
-    top:50px;
-}
-
-.eye.left{
-    left:35px;
-}
-
-.eye.right{
-    right:35px;
-}
-
-.smile{
-    width:40px;
-    height:20px;
-    border-bottom:4px solid black;
-    border-radius:0 0 40px 40px;
-    position:absolute;
-    bottom:25px;
-    left:40px;
-}
-
-.body{
-    width:100px;
-    height:160px;
-    background:#8a2be2;
-    margin:auto;
-    border-radius:20px;
-    margin-top:-10px;
-}
-
-@keyframes bounce{
-    0%,100%{
-        transform:translateY(0px);
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Misaki Anti Pédophile</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    50%{
-        transform:translateY(-15px);
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
     }
-}
 
-.buttons{
-    margin-top:30px;
-    display:flex;
-    gap:20px;
-    justify-content:center;
-    flex-wrap:wrap;
-}
-
-.btn{
-    position:relative;
-    padding:15px 35px;
-    border:none;
-    border-radius:50px;
-    font-size:18px;
-    font-weight:bold;
-    color:white;
-    cursor:pointer;
-    text-decoration:none;
-    overflow:hidden;
-    transition:0.3s;
-    background:linear-gradient(45deg,#ff69b4,#a855f7);
-    box-shadow:0 0 20px rgba(255,255,255,0.5);
-}
-
-.btn:hover{
-    transform:scale(1.08);
-}
-
-.btn::before{
-    content:"🌸";
-    position:absolute;
-    left:-20px;
-    top:50%;
-    transform:translateY(-50%);
-    animation:flower1 3s linear infinite;
-}
-
-.btn::after{
-    content:"🌸";
-    position:absolute;
-    right:-20px;
-    top:50%;
-    transform:translateY(-50%);
-    animation:flower2 3s linear infinite;
-}
-
-@keyframes flower1{
-    0%{
-        transform:translateY(-50%) rotate(0deg);
+    #stars-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
     }
-    100%{
-        transform:translateY(-50%) rotate(360deg);
-    }
-}
 
-@keyframes flower2{
-    0%{
-        transform:translateY(-50%) rotate(360deg);
+    .container {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+      padding: 40px 20px;
+      flex: 1;
+      justify-content: center;
     }
-    100%{
-        transform:translateY(-50%) rotate(0deg);
+
+    .logo-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
     }
-}
-</style>
+
+    .site-logo {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 30px rgba(114, 137, 218, 0.6);
+      animation: shake 0.35s infinite;
+    }
+
+    @keyframes shake {
+      0%   { transform: translate(0, 0) rotate(0deg); }
+      15%  { transform: translate(-3px, 2px) rotate(-1deg); }
+      30%  { transform: translate(3px, -2px) rotate(1deg); }
+      45%  { transform: translate(-2px, 3px) rotate(-0.5deg); }
+      60%  { transform: translate(2px, -3px) rotate(0.5deg); }
+      75%  { transform: translate(-3px, -1px) rotate(-1deg); }
+      90%  { transform: translate(3px, 1px) rotate(1deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
+    }
+
+    .site-title {
+      font-size: clamp(1.6rem, 5vw, 2.6rem);
+      font-weight: 900;
+      text-align: center;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #fff 30%, #7289da 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .site-sub {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .server-desc {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.75);
+      text-align: center;
+      max-width: 340px;
+      line-height: 1.6;
+    }
+
+    .highlight {
+      color: #7289da;
+      font-weight: 700;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 340px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 15px 28px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: transform 0.18s, box-shadow 0.18s, filter 0.18s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.03);
+      filter: brightness(1.15);
+    }
+
+    .btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .btn-discord-anti {
+      background: linear-gradient(135deg, #5865f2, #7289da);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(88, 101, 242, 0.45);
+    }
+
+    .btn-discord-official {
+      background: linear-gradient(135deg, #23272a, #36393f);
+      color: #fff;
+      border: 2px solid #5865f2;
+      box-shadow: 0 4px 20px rgba(88, 101, 242, 0.25);
+    }
+
+    .discord-icon {
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 20px 20px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(6px);
+    }
+
+    .footer-copyright {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+    }
+
+    .btn-mathix {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      color: #a0b4ff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 8px;
+      text-decoration: none;
+      border: 1px solid rgba(114, 137, 218, 0.35);
+      transition: transform 0.18s, box-shadow 0.18s, filter 0.18s;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-mathix:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(114, 137, 218, 0.35);
+      filter: brightness(1.2);
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="stars"></div>
+  <canvas id="stars-canvas"></canvas>
 
-<div class="container">
-
-    <h1>🌸 Misaki Anti Pédophile 🌸</h1>
-
-    <div class="anime-girl">
-        <div class="head">
-            <div class="hair"></div>
-            <div class="eye left"></div>
-            <div class="eye right"></div>
-            <div class="smile"></div>
-        </div>
-        <div class="body"></div>
+  <div class="container">
+    <div class="logo-wrapper">
+      <img src="logo.png" alt="Logo Misaki" class="site-logo" />
+      <h1 class="site-title">Misaki Anti Pédophile</h1>
+      <p class="site-sub">Protection &amp; Sécurité</p>
     </div>
+
+    <p class="server-desc">Misaki est l'un des serveurs les plus actifs de France avec plus de <span class="highlight">300 personnes en vocale</span> ! Et <span class="highlight">130 000 personnes</span> dans le serveur Discord</p>
 
     <div class="buttons">
+      <a href="https://discord.gg/j6uK8UC2Jj" target="_blank" rel="noopener" class="btn btn-discord-anti">
+        <svg class="discord-icon" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M60.105 4.898A58.55 58.55 0 0 0 45.653.415a.22.22 0 0 0-.233.11 40.784 40.784 0 0 0-1.8 3.697c-5.456-.817-10.886-.817-16.23 0-.485-1.164-1.201-2.587-1.823-3.697a.228.228 0 0 0-.233-.11 58.386 58.386 0 0 0-14.451 4.483.207.207 0 0 0-.095.082C1.578 18.73-.944 32.144.293 45.39a.244.244 0 0 0 .093.167c6.073 4.46 11.956 7.167 17.729 8.962a.23.23 0 0 0 .249-.082 42.08 42.08 0 0 0 3.627-5.9.225.225 0 0 0-.123-.312 38.772 38.772 0 0 1-5.539-2.64.228.228 0 0 1-.022-.378c.372-.279.744-.569 1.1-.862a.22.22 0 0 1 .23-.031c11.621 5.305 24.198 5.305 35.681 0a.219.219 0 0 1 .232.028c.356.293.728.586 1.103.865a.228.228 0 0 1-.02.378 36.384 36.384 0 0 1-5.54 2.637.227.227 0 0 0-.121.315 47.249 47.249 0 0 0 3.624 5.897.225.225 0 0 0 .249.084c5.799-1.795 11.683-4.502 17.756-8.962a.228.228 0 0 0 .092-.164c1.48-15.315-2.48-28.618-10.497-40.412a.18.18 0 0 0-.093-.084ZM23.725 37.322c-3.498 0-6.38-3.212-6.38-7.156 0-3.944 2.826-7.156 6.38-7.156 3.582 0 6.437 3.24 6.38 7.156 0 3.944-2.826 7.156-6.38 7.156Zm23.593 0c-3.498 0-6.38-3.212-6.38-7.156 0-3.944 2.826-7.156 6.38-7.156 3.582 0 6.437 3.24 6.38 7.156 0 3.944-2.798 7.156-6.38 7.156Z" fill="#ffffff"/>
+        </svg>
+        Misaki Anti PEDO
+      </a>
 
-        <a class="btn"
-           href="https://discord.gg/mM8rB44a9k"
-           target="_blank">
-            Misaki Anti Pédophile
-        </a>
-
-        <a class="btn"
-           href="https://discord.gg/DrkezfTVqZ"
-           target="_blank">
-            Misaki
-        </a>
-
-    </div>
-
-</div>
-
-</body>
-</html>
+      <a href="https://discord.gg/DrkezfTVqZ" target="_blank" rel="noopener" class="btn btn-discord-official">
+        <svg class="discord-icon" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M60.105 4.898A58.55 58.55 0 0 0 45.653.415a.22.22 0 0 0-.233.11 40.784 40.784 0 0 0-1.8 3.697c-5.456-.817-10.886-.817-16.23 0-.485-1.164-1.201-2.587-1.823-3.697a.228.228 0 0 0-.233-.11 58.386 58.386 0 0 0-14.451 4.483.207.207 0 0 0-.095.082C1.578 18.73-.944 32.144.293 45.39a.244.244 0 0 0 .093.167c6.073 4.46 11.956 7.167 17.729 8.962a.23.23 0 0 0 .249-.082 42.0
