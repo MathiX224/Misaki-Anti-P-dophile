@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutoriel – Misaki Anti Pédophile</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000; color: #fff;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh; display: flex;
+      flex-direction: column; align-items: center;
+      overflow-x: hidden; position: relative;
+    }
+    #stars-canvas { position: fixed; inset: 0; z-index: 0; }
+    header {
+      position: relative; z-index: 1; width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; padding: 36px 20px 20px;
+    }
+    .header-logo {
+      width: 60px; height: 60px; border-radius: 50%; object-fit: cover;
+      box-shadow: 0 0 20px rgba(114,137,218,0.6); animation: shake 0.35s infinite;
+    }
+    @keyframes shake {
+      0%   { transform: translate(0,0) rotate(0deg); }
+      15%  { transform: translate(-3px,2px) rotate(-1deg); }
+      30%  { transform: translate(3px,-2px) rotate(1deg); }
+      45%  { transform: translate(-2px,3px) rotate(-0.5deg); }
+      60%  { transform: translate(2px,-3px) rotate(0.5deg); }
+      75%  { transform: translate(-3px,-1px) rotate(-1deg); }
+      90%  { transform: translate(3px,1px) rotate(1deg); }
+      100% { transform: translate(0,0) rotate(0deg); }
+    }
+    .header-title {
+      font-size: clamp(1.3rem,4vw,2rem); font-weight: 900;
+      text-transform: uppercase; letter-spacing: 1px;
+      background: linear-gradient(135deg,#fff 30%,#7289da 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    main {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 720px;
+      padding: 10px 24px 50px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .page-title {
+      font-size: clamp(1.4rem,4vw,2rem); font-weight: 900;
+      text-align: center; letter-spacing: 1px;
+      background: linear-gradient(135deg,#fff 30%,#7289da 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 8px;
+    }
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(114,137,218,0.2);
+      border-radius: 14px; padding: 22px 24px;
+      display: flex; flex-direction: column; gap: 10px;
+      backdrop-filter: blur(4px);
+    }
+    .card-title {
+      font-size: 1.05rem; font-weight: 800;
+      color: #a0b4ff; letter-spacing: 0.5px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card-title .emoji { font-size: 1.2rem; }
+    .card-body {
+      font-size: 0.93rem; color: rgba(255,255,255,0.75); line-height: 1.75;
+    }
+    .commands { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+    .cmd {
+      background: rgba(88,101,242,0.12);
+      border: 1px solid rgba(88,101,242,0.25);
+      border-radius: 8px; padding: 10px 14px;
+      font-size: 0.88rem; color: rgba(255,255,255,0.85); line-height: 1.6;
+    }
+    .cmd code {
+      background: rgba(114,137,218,0.25); color: #c5d0ff;
+      border-radius: 4px; padding: 1px 6px;
+      font-family: monospace; font-size: 0.9em;
+    }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      align-self: center; margin-top: 8px;
+      background: linear-gradient(135deg,#5865f2,#7289da);
+      color: #fff; font-size: 0.9rem; font-weight: 700;
+      padding: 12px 26px; border-radius: 10px;
+      text-decoration: none; letter-spacing: 0.5px;
+      transition: transform 0.18s, filter 0.18s;
+    }
+    .back-btn:hover { transform: translateY(-2px); filter: brightness(1.15); }
+    footer {
+      position: relative; z-index: 1; width: 100%;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 20px 20px 24px; display: flex; flex-direction: column;
+      align-items: center; gap: 12px;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(6px);
+    }
+    .footer-copyright { font-size: 0.78rem; color: rgba(255,255,255,0.4); text-align: center; }
+    .btn-mathix {
+      background: linear-gradient(135deg,#1a1a2e,#16213e); color: #a0b4ff;
+      font-size: 0.85rem; font-weight: 600; padding: 10px 22px; border-radius: 8px;
+      text-decoration: none; border: 1px solid rgba(114,137,218,0.35);
+      transition: transform 0.18s, box-shadow 0.18s, filter 0.18s; letter-spacing: 0.5px;
+    }
+    .btn-mathix:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(114,137,218,0.35); filter: brightness(1.2); }
+  </style>
+</head>
+<body>
+
+  <canvas id="stars-canvas"></canvas>
+
+  <header>
+    <img src="logo.png" alt="Logo Misaki" class="header-logo" />
+    <span class="header-title">Misaki Anti Pédophile</span>
+  </header>
+
+  <main>
+    <h1 class="page-title">Explication</h1>
+
+    <div class="card">
+      <div class="card-title"><span class="emoji">❓</span>C'est quoi la Brigade Anti P ?</div>
+      <p class="card-body">La Brigade Anti P, de son vrai nom <strong>"Brigade Anti Pédo"</strong>, est une team sur Misaki dont le but est d'identifier et de signaler les personnes suspectées d'être des pédophiles.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="emoji">🎯</span>Objectif</div>
+      <p class="card-body">L'objectif est simple : faire disparaître les pédophiles de Misaki.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="emoji">🪄</span>Votre mission</div>
+      <p class="card-body">Vous devrez vous rendre dans différents vocaux publics afin d'identifier les suspects, puis les signaler dans le salon <strong>⛔・report</strong>. Le plus important : soyez actifs en vocal.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="emoji">❔</span>Comment ça marche ?</div>
+      <p class="card-body">En tant que membre de la Brigade, vous avez accès aux commandes suivantes :</p>
+      <div class="commands">
+        <div class="cmd"><code>/report</code> + <code>ID du suspect</code> + <code>Raison</code> + <code>Preuves (screen ou enregistrement)</code> — pour signaler une personne suspecte</div>
+        <div class="cmd"><code>/mineur</code> + <code>ID</code> — pour enregistrer l'ID d'une personne mineure présente en vocal</div>
+        <div class="cmd"><code>/majeur</code> + <code>ID</code> — pour enregistrer l'ID d'une personne majeure présente en vocal</div>
+        <div class="cmd"><code>/suspect</code> + <code>ID</code> — quand vous êtes certains qu'une personne est suspecte ou a eu un comportement inquiétant</div>
+      </div>
+      <p class="card-body" style="margin-top:6px;">Si un mineur et un majeur enregistrés se retrouvent dans le même vocal, une logs automatique sera envoyée dans le salon dédié.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="emoji">🏆</span>Leaderboard</div>
+      <p class="card-body">Pour récompenser les membres les plus investis, un classement a été mis en place. Vous avez accès à <strong>2 classements</strong> : un pour le nombre de reports effectués, et un pour les heures passées en vocal sur Misaki.</p>
+    </div>
+
+    <a href="index.html" class="back-btn">← Retour à l'accueil</a>
+  </main>
+
+  <footer>
+    <p class="footer-copyright">© 2026 MathiX Games Corporation - Tous droits réservés</p>
+    <a href="https://mathix224.github.io/MathiX-Games-Corporation/index.html" target="_blank" rel="noopener" class="btn-mathix">
+      MathiX Games Corporation
+    </a>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById('stars-canvas');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    const STAR_COUNT = 220;
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < STAR_COUNT; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.8 + 0.3,
+          speed: Math.random() * 6 + 0.5,
+          alpha: Math.random() * 0.6 + 0.4,
+        });
+      }
+    }
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const s of stars) {
+        s.y += s.speed;
+        if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+        ctx.fill();
+      }
+      requestAnimationFrame(draw);
+    }
+    window.addEventListener('resize', () => { resize(); initStars(); });
+    resize(); initStars(); draw();
+  </script>
+
+</body>
+</html>
