@@ -1,1 +1,545 @@
+cat > /mnt/user-data/outputs/admin.html << 'ENDOFFILE'
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin – Misaki Anti Pédophile</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000; color: #fff;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; overflow-x: hidden; position: relative;
+    }
+    #stars-canvas { position: fixed; inset: 0; z-index: 0; }
 
+    /* ── LOGIN SCREEN ── */
+    #login-screen {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 100vh; width: 100%;
+      padding: 20px;
+    }
+    .login-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(114,137,218,0.25);
+      border-radius: 18px; padding: 36px 32px;
+      width: 100%; max-width: 400px;
+      display: flex; flex-direction: column; align-items: center; gap: 22px;
+      backdrop-filter: blur(6px);
+    }
+    .login-logo {
+      width: 80px; height: 80px; border-radius: 50%; object-fit: cover;
+      box-shadow: 0 0 24px rgba(114,137,218,0.5); animation: shake 0.35s infinite;
+    }
+    @keyframes shake {
+      0%   { transform: translate(0,0) rotate(0deg); }
+      15%  { transform: translate(-3px,2px) rotate(-1deg); }
+      30%  { transform: translate(3px,-2px) rotate(1deg); }
+      45%  { transform: translate(-2px,3px) rotate(-0.5deg); }
+      60%  { transform: translate(2px,-3px) rotate(0.5deg); }
+      75%  { transform: translate(-3px,-1px) rotate(-1deg); }
+      90%  { transform: translate(3px,1px) rotate(1deg); }
+      100% { transform: translate(0,0) rotate(0deg); }
+    }
+    .login-title {
+      font-size: 1.4rem; font-weight: 900; text-align: center; text-transform: uppercase;
+      background: linear-gradient(135deg,#fff 30%,#7289da 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .login-sub { font-size: 0.8rem; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; }
+    .login-field { display: flex; flex-direction: column; gap: 7px; width: 100%; }
+    .login-field label { font-size: 0.8rem; font-weight: 700; color: #a0b4ff; text-transform: uppercase; letter-spacing: 0.5px; }
+    .login-field input {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(114,137,218,0.3);
+      border-radius: 10px; color: #fff; font-family: inherit; font-size: 0.95rem;
+      padding: 12px 14px; outline: none; transition: border-color 0.2s; width: 100%;
+    }
+    .login-field input:focus { border-color: #7289da; background: rgba(114,137,218,0.1); }
+    .login-btn {
+      background: linear-gradient(135deg,#5865f2,#7289da); color: #fff;
+      font-size: 0.95rem; font-weight: 800; padding: 13px 28px; border-radius: 10px;
+      border: none; cursor: pointer; width: 100%; letter-spacing: 0.5px;
+      transition: filter 0.18s, transform 0.18s;
+    }
+    .login-btn:hover { filter: brightness(1.15); transform: translateY(-2px); }
+    .login-error { font-size: 0.85rem; color: #ff6b6b; text-align: center; display: none; }
+
+    /* ── ADMIN PANEL ── */
+    #admin-panel { display: none; flex-direction: column; align-items: center; width: 100%; }
+
+    header {
+      position: relative; z-index: 1; width: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 28px 16px; flex-wrap: wrap; gap: 12px;
+    }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .header-logo-sm {
+      width: 42px; height: 42px; border-radius: 50%; object-fit: cover;
+      box-shadow: 0 0 14px rgba(114,137,218,0.5); animation: shake 0.35s infinite;
+    }
+    .header-title {
+      font-size: clamp(1rem,3vw,1.5rem); font-weight: 900; text-transform: uppercase;
+      background: linear-gradient(135deg,#fff 30%,#7289da 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .header-right { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .btn-sm {
+      font-size: 0.8rem; font-weight: 700; padding: 8px 16px; border-radius: 8px;
+      border: none; cursor: pointer; text-decoration: none;
+      transition: filter 0.18s, transform 0.18s; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-sm:hover { filter: brightness(1.15); transform: translateY(-1px); }
+    .btn-logout { background: rgba(255,100,100,0.15); color: #ff8888; border: 1px solid rgba(255,100,100,0.3); }
+    .btn-home { background: rgba(114,137,218,0.15); color: #a0b4ff; border: 1px solid rgba(114,137,218,0.3); }
+    .btn-clear { background: rgba(255,200,50,0.1); color: #ffd080; border: 1px solid rgba(255,200,50,0.25); }
+
+    main {
+      position: relative; z-index: 1; width: 100%; max-width: 900px;
+      padding: 0 20px 60px; display: flex; flex-direction: column; gap: 20px;
+    }
+
+    /* Stats bar */
+    .stats-bar {
+      display: flex; flex-wrap: wrap; gap: 12px;
+    }
+    .stat-card {
+      flex: 1; min-width: 140px; background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(114,137,218,0.2); border-radius: 12px;
+      padding: 16px 18px; display: flex; flex-direction: column; gap: 4px;
+      backdrop-filter: blur(4px);
+    }
+    .stat-label { font-size: 0.72rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; }
+    .stat-value { font-size: 1.6rem; font-weight: 900; color: #a0b4ff; }
+
+    /* Reports section title */
+    .section-title {
+      font-size: 1.1rem; font-weight: 800; color: #fff;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .badge {
+      background: #e74c3c; color: #fff; font-size: 0.7rem; font-weight: 800;
+      padding: 2px 8px; border-radius: 20px;
+    }
+
+    /* Filters */
+    .filters {
+      display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    .filter-btn {
+      font-size: 0.8rem; font-weight: 700; padding: 7px 14px; border-radius: 8px;
+      border: 1px solid rgba(114,137,218,0.25); background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.18s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: rgba(114,137,218,0.2); color: #a0b4ff; border-color: #7289da;
+    }
+
+    /* Report cards */
+    .reports-list { display: flex; flex-direction: column; gap: 14px; }
+    .report-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(231,76,60,0.2);
+      border-radius: 14px; padding: 20px 22px;
+      display: flex; flex-direction: column; gap: 12px;
+      backdrop-filter: blur(4px); transition: border-color 0.2s;
+    }
+    .report-card:hover { border-color: rgba(231,76,60,0.45); }
+    .report-card.resolved { border-color: rgba(46,204,113,0.2); opacity: 0.7; }
+    .report-card.resolved:hover { border-color: rgba(46,204,113,0.4); }
+
+    .report-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .report-id { font-size: 0.72rem; color: rgba(255,255,255,0.3); font-family: monospace; }
+    .report-date { font-size: 0.75rem; color: rgba(255,255,255,0.35); }
+    .status-badge {
+      font-size: 0.7rem; font-weight: 800; padding: 3px 10px; border-radius: 20px; white-space: nowrap;
+    }
+    .status-new { background: rgba(231,76,60,0.2); color: #ff8888; border: 1px solid rgba(231,76,60,0.3); }
+    .status-resolved { background: rgba(46,204,113,0.15); color: #6ee89f; border: 1px solid rgba(46,204,113,0.3); }
+
+    .report-fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+    .report-field { display: flex; flex-direction: column; gap: 3px; }
+    .rf-label { font-size: 0.7rem; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.5px; }
+    .rf-value { font-size: 0.9rem; color: #e0e0ff; word-break: break-all; }
+
+    .report-reason {
+      background: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.15);
+      border-radius: 8px; padding: 10px 14px; font-size: 0.88rem; color: #ffaaaa;
+    }
+    .report-details {
+      font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6;
+      border-left: 2px solid rgba(114,137,218,0.3); padding-left: 12px;
+    }
+
+    /* Proof files */
+    .proof-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .proof-item {
+      background: rgba(114,137,218,0.12); border: 1px solid rgba(114,137,218,0.25);
+      border-radius: 8px; padding: 6px 12px; font-size: 0.8rem; color: #c5d0ff;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .report-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .action-btn {
+      font-size: 0.8rem; font-weight: 700; padding: 8px 16px; border-radius: 8px;
+      border: none; cursor: pointer; transition: filter 0.18s, transform 0.18s;
+    }
+    .action-btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+    .btn-resolve { background: rgba(46,204,113,0.2); color: #6ee89f; border: 1px solid rgba(46,204,113,0.3); }
+    .btn-delete { background: rgba(231,76,60,0.15); color: #ff8888; border: 1px solid rgba(231,76,60,0.25); }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center; padding: 50px 20px;
+      color: rgba(255,255,255,0.3); font-size: 0.95rem;
+    }
+    .empty-state .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+
+    /* Access manager */
+    .access-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(114,137,218,0.15);
+      border-radius: 14px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px;
+    }
+    .access-title { font-size: 0.95rem; font-weight: 800; color: #a0b4ff; }
+    .access-list { display: flex; flex-direction: column; gap: 8px; }
+    .access-item {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      background: rgba(255,255,255,0.04); border-radius: 8px; padding: 10px 14px;
+    }
+    .access-user { display: flex; flex-direction: column; gap: 2px; }
+    .access-username { font-size: 0.9rem; font-weight: 700; color: #e0e0ff; }
+    .access-role { font-size: 0.72rem; color: rgba(255,255,255,0.35); text-transform: uppercase; }
+    .btn-remove-access { background: rgba(231,76,60,0.15); color: #ff8888; border: 1px solid rgba(231,76,60,0.25); font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 6px; cursor: pointer; border-width: 1px; }
+    .add-access-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .add-access-row input {
+      flex: 1; min-width: 150px; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(114,137,218,0.3); border-radius: 8px; color: #fff;
+      font-family: inherit; font-size: 0.88rem; padding: 9px 12px; outline: none;
+    }
+    .add-access-row input:focus { border-color: #7289da; }
+    .btn-add-access {
+      background: linear-gradient(135deg,#5865f2,#7289da); color: #fff;
+      font-size: 0.85rem; font-weight: 700; padding: 9px 18px; border-radius: 8px;
+      border: none; cursor: pointer; white-space: nowrap;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: #2ecc71; color: #fff; font-weight: 700;
+      padding: 12px 24px; border-radius: 10px; font-size: 0.9rem;
+      z-index: 999; transition: transform 0.4s; box-shadow: 0 4px 20px rgba(0,0,0,0.4); white-space: nowrap;
+    }
+    .toast.error { background: #e74c3c; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* Footer */
+    footer {
+      position: relative; z-index: 1; width: 100%;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 18px 20px 22px; display: flex; flex-direction: column;
+      align-items: center; gap: 10px;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); margin-top: auto;
+    }
+    .footer-copyright { font-size: 0.75rem; color: rgba(255,255,255,0.3); }
+    .btn-mathix {
+      background: linear-gradient(135deg,#1a1a2e,#16213e); color: #a0b4ff;
+      font-size: 0.82rem; font-weight: 600; padding: 9px 20px; border-radius: 8px;
+      text-decoration: none; border: 1px solid rgba(114,137,218,0.3);
+      transition: transform 0.18s, filter 0.18s;
+    }
+    .btn-mathix:hover { transform: translateY(-2px); filter: brightness(1.2); }
+  </style>
+</head>
+<body>
+
+  <canvas id="stars-canvas"></canvas>
+  <div class="toast" id="toast"></div>
+
+  <!-- ══ LOGIN SCREEN ══ -->
+  <div id="login-screen">
+    <div class="login-box">
+      <img src="logo.png" alt="Logo" class="login-logo" />
+      <div class="login-title">Accès Admin</div>
+      <div class="login-sub">Brigade Anti Pédo</div>
+      <div class="login-field">
+        <label>Nom d'utilisateur</label>
+        <input type="text" id="login-user" placeholder="Votre identifiant" autocomplete="off" />
+      </div>
+      <div class="login-field">
+        <label>Mot de passe</label>
+        <input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" />
+      </div>
+      <p class="login-error" id="login-error">❌ Identifiant ou mot de passe incorrect.</p>
+      <button class="login-btn" onclick="doLogin()">🔐 Se connecter</button>
+    </div>
+  </div>
+
+  <!-- ══ ADMIN PANEL ══ -->
+  <div id="admin-panel">
+    <header>
+      <div class="header-left">
+        <img src="logo.png" alt="Logo" class="header-logo-sm" />
+        <span class="header-title">Panel Admin</span>
+      </div>
+      <div class="header-right">
+        <span id="logged-as" style="font-size:0.8rem;color:rgba(255,255,255,0.4);"></span>
+        <a href="index.html" class="btn-sm btn-home">🏠 Accueil</a>
+        <button class="btn-sm btn-clear" onclick="clearAllReports()">🗑️ Tout effacer</button>
+        <button class="btn-sm btn-logout" onclick="logout()">🚪 Déconnexion</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Stats -->
+      <div class="stats-bar">
+        <div class="stat-card">
+          <div class="stat-label">Total reports</div>
+          <div class="stat-value" id="stat-total">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">En attente</div>
+          <div class="stat-value" id="stat-pending" style="color:#ff8888;">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Résolus</div>
+          <div class="stat-value" id="stat-resolved" style="color:#6ee89f;">0</div>
+        </div>
+      </div>
+
+      <!-- Reports -->
+      <div class="section-title">⛔ Reports reçus <span class="badge" id="badge-count">0</span></div>
+      <div class="filters">
+        <button class="filter-btn active" onclick="setFilter('all',this)">Tous</button>
+        <button class="filter-btn" onclick="setFilter('new',this)">En attente</button>
+        <button class="filter-btn" onclick="setFilter('resolved',this)">Résolus</button>
+      </div>
+      <div class="reports-list" id="reports-list"></div>
+
+      <!-- Access manager -->
+      <div class="section-title" style="margin-top:10px;">👥 Gestion des accès</div>
+      <div class="access-card">
+        <div class="access-title">Comptes autorisés</div>
+        <div class="access-list" id="access-list"></div>
+        <div class="add-access-row">
+          <input type="text" id="new-username" placeholder="Nom d'utilisateur" autocomplete="off" />
+          <input type="password" id="new-password" placeholder="Mot de passe" />
+          <button class="btn-add-access" onclick="addUser()">➕ Ajouter</button>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p class="footer-copyright">© 2026 MathiX Games Corporation - Tous droits réservés</p>
+      <a href="https://mathix224.github.io/MathiX-Games-Corporation/index.html" target="_blank" rel="noopener" class="btn-mathix">MathiX Games Corporation</a>
+    </footer>
+  </div>
+
+  <script>
+    /* ── Stars ── */
+    const canvas = document.getElementById('stars-canvas');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < 220; i++) stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*1.8+0.3, speed: Math.random()*6+0.5, alpha: Math.random()*0.6+0.4 });
+    }
+    function drawStars() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for (const s of stars) {
+        s.y += s.speed;
+        if (s.y > canvas.height) { s.y = 0; s.x = Math.random()*canvas.width; }
+        ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(255,255,255,${s.alpha})`; ctx.fill();
+      }
+      requestAnimationFrame(drawStars);
+    }
+    window.addEventListener('resize',()=>{resize();initStars();});
+    resize(); initStars(); drawStars();
+
+    /* ── Storage helpers ── */
+    function getUsers() {
+      const u = localStorage.getItem('misaki_admin_users');
+      if (u) return JSON.parse(u);
+      // Default admin account
+      const defaults = [{ username: 'admin', password: 'misaki2026', role: 'Super Admin' }];
+      localStorage.setItem('misaki_admin_users', JSON.stringify(defaults));
+      return defaults;
+    }
+    function saveUsers(u) { localStorage.setItem('misaki_admin_users', JSON.stringify(u)); }
+    function getReports() {
+      const r = localStorage.getItem('misaki_reports');
+      return r ? JSON.parse(r) : [];
+    }
+    function saveReports(r) { localStorage.setItem('misaki_reports', JSON.stringify(r)); }
+
+    /* ── Session ── */
+    let currentUser = null;
+    function doLogin() {
+      const u = document.getElementById('login-user').value.trim();
+      const p = document.getElementById('login-pass').value;
+      const users = getUsers();
+      const match = users.find(x => x.username === u && x.password === p);
+      if (!match) {
+        document.getElementById('login-error').style.display = 'block';
+        return;
+      }
+      currentUser = match;
+      sessionStorage.setItem('misaki_session', JSON.stringify(match));
+      showPanel();
+    }
+    function logout() {
+      sessionStorage.removeItem('misaki_session');
+      currentUser = null;
+      document.getElementById('admin-panel').style.display = 'none';
+      document.getElementById('login-screen').style.display = 'flex';
+    }
+    function showPanel() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'flex';
+      document.getElementById('logged-as').textContent = '👤 ' + currentUser.username;
+      renderReports();
+      renderUsers();
+    }
+
+    // Auto-login if session exists
+    window.addEventListener('DOMContentLoaded', () => {
+      const sess = sessionStorage.getItem('misaki_session');
+      if (sess) { currentUser = JSON.parse(sess); showPanel(); }
+    });
+
+    /* ── Filter ── */
+    let currentFilter = 'all';
+    function setFilter(f, btn) {
+      currentFilter = f;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderReports();
+    }
+
+    /* ── Toast ── */
+    function showToast(msg, isError=false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.className = 'toast'+(isError?' error':'')+' show';
+      setTimeout(() => { t.className = 'toast'+(isError?' error':''); }, 3000);
+    }
+
+    /* ── Render reports ── */
+    function renderReports() {
+      const reports = getReports();
+      let filtered = reports;
+      if (currentFilter === 'new') filtered = reports.filter(r => r.status !== 'resolved');
+      if (currentFilter === 'resolved') filtered = reports.filter(r => r.status === 'resolved');
+
+      const pending = reports.filter(r => r.status !== 'resolved').length;
+      const resolved = reports.filter(r => r.status === 'resolved').length;
+      document.getElementById('stat-total').textContent = reports.length;
+      document.getElementById('stat-pending').textContent = pending;
+      document.getElementById('stat-resolved').textContent = resolved;
+      document.getElementById('badge-count').textContent = pending;
+
+      const list = document.getElementById('reports-list');
+      if (filtered.length === 0) {
+        list.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div>Aucun report${currentFilter!=='all'?' dans cette catégorie':''} pour le moment.</div>`;
+        return;
+      }
+      list.innerHTML = filtered.slice().reverse().map(r => `
+        <div class="report-card ${r.status==='resolved'?'resolved':''}" id="card-${r.id}">
+          <div class="report-header">
+            <div>
+              <div class="report-id">Report #${r.id}</div>
+              <div class="report-date">📅 ${r.date}</div>
+            </div>
+            <span class="status-badge ${r.status==='resolved'?'status-resolved':'status-new'}">
+              ${r.status==='resolved'?'✅ Résolu':'🔴 En attente'}
+            </span>
+          </div>
+          <div class="report-fields">
+            <div class="report-field"><div class="rf-label">@ Suspect</div><div class="rf-value">${r.suspectTag||'—'}</div></div>
+            <div class="report-field"><div class="rf-label">ID Discord</div><div class="rf-value">${r.suspectId||'—'}</div></div>
+            <div class="report-field"><div class="rf-label">Reporté par</div><div class="rf-value">${r.reporter||'—'}</div></div>
+          </div>
+          <div class="report-reason">❗ ${r.reason||'Non précisé'}</div>
+          ${r.details ? `<div class="report-details">${r.details}</div>` : ''}
+          ${r.proofs && r.proofs.length ? `<div class="proof-list">${r.proofs.map(p=>`<div class="proof-item">📎 ${p}</div>`).join('')}</div>` : ''}
+          <div class="report-actions">
+            ${r.status!=='resolved' ? `<button class="action-btn btn-resolve" onclick="resolveReport('${r.id}')">✅ Marquer résolu</button>` : `<button class="action-btn btn-resolve" onclick="unresolveReport('${r.id}')">🔄 Rouvrir</button>`}
+            <button class="action-btn btn-delete" onclick="deleteReport('${r.id}')">🗑️ Supprimer</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function resolveReport(id) {
+      const reports = getReports();
+      const r = reports.find(x => x.id === id);
+      if (r) { r.status = 'resolved'; saveReports(reports); renderReports(); showToast('✅ Report marqué comme résolu !'); }
+    }
+    function unresolveReport(id) {
+      const reports = getReports();
+      const r = reports.find(x => x.id === id);
+      if (r) { r.status = 'new'; saveReports(reports); renderReports(); showToast('🔄 Report rouvert.'); }
+    }
+    function deleteReport(id) {
+      if (!confirm('Supprimer ce report définitivement ?')) return;
+      let reports = getReports().filter(x => x.id !== id);
+      saveReports(reports); renderReports(); showToast('🗑️ Report supprimé.');
+    }
+    function clearAllReports() {
+      if (!confirm('Supprimer TOUS les reports ? Cette action est irréversible.')) return;
+      saveReports([]); renderReports(); showToast('🗑️ Tous les reports ont été effacés.');
+    }
+
+    /* ── Render users ── */
+    function renderUsers() {
+      const users = getUsers();
+      const list = document.getElementById('access-list');
+      list.innerHTML = users.map((u,i) => `
+        <div class="access-item">
+          <div class="access-user">
+            <div class="access-username">👤 ${u.username}</div>
+            <div class="access-role">${u.role || 'Modérateur'}</div>
+          </div>
+          ${u.username !== currentUser.username
+            ? `<button class="btn-remove-access" onclick="removeUser(${i})">Retirer l'accès</button>`
+            : `<span style="font-size:0.72rem;color:rgba(255,255,255,0.25);">Vous</span>`
+          }
+        </div>
+      `).join('');
+    }
+    function addUser() {
+      const u = document.getElementById('new-username').value.trim();
+      const p = document.getElementById('new-password').value.trim();
+      if (!u || !p) { showToast('Remplis les deux champs !', true); return; }
+      const users = getUsers();
+      if (users.find(x => x.username === u)) { showToast('Cet utilisateur existe déjà !', true); return; }
+      users.push({ username: u, password: p, role: 'Modérateur' });
+      saveUsers(users);
+      document.getElementById('new-username').value = '';
+      document.getElementById('new-password').value = '';
+      renderUsers(); showToast('✅ Accès ajouté pour ' + u + ' !');
+    }
+    function removeUser(i) {
+      const users = getUsers();
+      if (users[i].username === currentUser.username) { showToast('Impossible de vous retirer vous-même !', true); return; }
+      if (!confirm(`Retirer l'accès de "${users[i].username}" ?`)) return;
+      users.splice(i,1); saveUsers(users); renderUsers();
+      showToast('🚫 Accès retiré.');
+    }
+  </script>
+
+  <!-- ══ REPORT RECEIVER SCRIPT ══ -->
+  <!-- Ce script permet à report.html d'envoyer les données dans ce panel -->
+  <script>
+    // Expose a global function so report.html can call it via localStorage events
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'misaki_reports') { renderReports && renderReports(); }
+    });
+  </script>
+
+</body>
+</html>
+ENDOFFILE
