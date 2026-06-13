@@ -463,8 +463,58 @@
           </div>
           <div class="report-reason">❗ ${r.reason||'Non précisé'}</div>
           ${r.details ? `<div class="report-details">${r.details}</div>` : ''}
-          ${r.proofs && r.proofs.length ? `<div class="proof-list">${r.proofs.map(p=>`<div class="proof-item">📎 ${p}</div>`).join('')}</div>` : ''}
-          <div class="report-actions">
+
+${r.proofsData && r.proofsData.length ? `
+<div class="proof-list">
+  ${r.proofsData.map(file => {
+
+    if(file.type.startsWith('image/')){
+      return `
+      <div class="proof-item">
+        <a href="${file.data}" target="_blank">
+          <img src="${file.data}"
+               alt="${file.name}"
+               style="
+                 max-width:220px;
+                 max-height:220px;
+                 border-radius:10px;
+                 cursor:pointer;
+                 object-fit:cover;
+                 border:1px solid rgba(114,137,218,0.4);
+               ">
+        </a>
+      </div>`;
+    }
+
+    if(file.type.startsWith('video/')){
+      return `
+      <div class="proof-item">
+        <video controls style="max-width:300px;border-radius:10px;">
+          <source src="${file.data}" type="${file.type}">
+        </video>
+      </div>`;
+    }
+
+    if(file.type.startsWith('audio/')){
+      return `
+      <div class="proof-item">
+        <audio controls>
+          <source src="${file.data}" type="${file.type}">
+        </audio>
+      </div>`;
+    }
+
+    return `
+      <div class="proof-item">
+        📎 ${file.name}
+      </div>
+    `;
+
+  }).join('')}
+</div>
+` : ''}
+
+<div class="report-actions">
             ${r.status!=='resolved' ? `<button class="action-btn btn-resolve" onclick="resolveReport('${r.id}')">✅ Marquer résolu</button>` : `<button class="action-btn btn-resolve" onclick="unresolveReport('${r.id}')">🔄 Rouvrir</button>`}
             <button class="action-btn btn-delete" onclick="deleteReport('${r.id}')">🗑️ Supprimer</button>
           </div>
