@@ -7,204 +7,85 @@
   <link rel="icon" type="image/png" href="logo.png" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: #000; color: #fff;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      min-height: 100vh; display: flex; flex-direction: column;
-      align-items: center; overflow-x: hidden; position: relative;
-    }
-    #stars-canvas { position: fixed; inset: 0; z-index: 0; }
-
-    header {
-      position: relative; z-index: 1; width: 100%;
-      display: flex; align-items: center; justify-content: center;
-      gap: 14px; padding: 30px 20px 14px;
-    }
-    .header-logo {
-      width: 52px; height: 52px; border-radius: 50%; object-fit: cover;
-      box-shadow: 0 0 18px rgba(114,137,218,0.6); animation: shake 0.35s infinite;
-    }
+    body { background:#000; color:#fff; font-family:'Segoe UI',Arial,sans-serif; min-height:100vh; display:flex; flex-direction:column; align-items:center; overflow-x:hidden; position:relative; }
+    #stars-canvas { position:fixed; inset:0; z-index:0; }
     @keyframes shake {
-      0%   { transform: translate(0,0) rotate(0deg); }
-      15%  { transform: translate(-3px,2px) rotate(-1deg); }
-      30%  { transform: translate(3px,-2px) rotate(1deg); }
-      45%  { transform: translate(-2px,3px) rotate(-0.5deg); }
-      60%  { transform: translate(2px,-3px) rotate(0.5deg); }
-      75%  { transform: translate(-3px,-1px) rotate(-1deg); }
-      90%  { transform: translate(3px,1px) rotate(1deg); }
-      100% { transform: translate(0,0) rotate(0deg); }
+      0%,100% { transform:translate(0,0) rotate(0deg); }
+      15% { transform:translate(-3px,2px) rotate(-1deg); }
+      30% { transform:translate(3px,-2px) rotate(1deg); }
+      45% { transform:translate(-2px,3px) rotate(-0.5deg); }
+      60% { transform:translate(2px,-3px) rotate(0.5deg); }
+      75% { transform:translate(-3px,-1px) rotate(-1deg); }
+      90% { transform:translate(3px,1px) rotate(1deg); }
     }
-    .header-title {
-      font-size: clamp(1rem,3vw,1.6rem); font-weight: 900;
-      text-transform: uppercase; letter-spacing: 1px;
-      background: linear-gradient(135deg,#fff 30%,#7289da 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-
-    main {
-      position: relative; z-index: 1; width: 100%; max-width: 660px;
-      padding: 8px 20px 60px; display: flex; flex-direction: column; gap: 18px;
-    }
-
-    .page-title {
-      font-size: clamp(1.4rem,4vw,2rem); font-weight: 900; text-align: center;
-      background: linear-gradient(135deg,#ff5f5f,#ff9090);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .page-sub {
-      text-align: center; font-size: 0.82rem; color: rgba(255,255,255,0.4);
-      letter-spacing: 2px; text-transform: uppercase; margin-top: -8px;
-    }
-
-    .form-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(114,137,218,0.18);
-      border-radius: 16px; padding: 26px 24px;
-      backdrop-filter: blur(6px);
-      display: flex; flex-direction: column; gap: 18px;
-    }
-
-    .field { display: flex; flex-direction: column; gap: 6px; }
-    label {
-      font-size: 0.78rem; font-weight: 700; color: #a0b4ff;
-      letter-spacing: 0.5px; text-transform: uppercase;
-    }
-    label .req { color: #ff6b6b; margin-left: 2px; }
-
-    input[type="text"], textarea, select {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(114,137,218,0.28);
-      border-radius: 10px; color: #fff;
-      font-family: inherit; font-size: 0.93rem;
-      padding: 11px 13px; outline: none;
-      transition: border-color 0.2s, background 0.2s; width: 100%;
-    }
-    input[type="text"]:focus, textarea:focus, select:focus {
-      border-color: #7289da; background: rgba(114,137,218,0.09);
-    }
-    input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.28); }
-    textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
-    select option { background: #1a1a2e; color: #fff; }
-
-    /* File drop zone */
-    .file-zone {
-      border: 2px dashed rgba(114,137,218,0.32);
-      border-radius: 12px; padding: 22px 16px;
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      cursor: pointer; transition: border-color 0.2s, background 0.2s; position: relative;
-    }
-    .file-zone.dragover { border-color: #7289da; background: rgba(114,137,218,0.08); }
-    .file-zone input[type="file"] {
-      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
-    }
-    .file-zone-icon { font-size: 1.8rem; }
-    .file-zone-text { font-size: 0.88rem; color: rgba(255,255,255,0.5); text-align: center; }
-    .file-zone-text strong { color: #a0b4ff; }
-    .file-zone-hint { font-size: 0.72rem; color: rgba(255,255,255,0.28); }
-
-    .file-preview { display: flex; flex-wrap: wrap; gap: 8px; }
-    .preview-thumb {
-      position: relative; width: 80px; height: 80px;
-      border-radius: 8px; overflow: hidden;
-      border: 1px solid rgba(114,137,218,0.3);
-    }
-    .preview-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .preview-thumb .file-tag {
-      width: 80px; height: 80px; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 4px;
-      background: rgba(114,137,218,0.15); font-size: 0.65rem; color: #c5d0ff;
-      text-align: center; padding: 4px;
-    }
-    .preview-thumb .remove-btn {
-      position: absolute; top: 3px; right: 3px;
-      background: rgba(0,0,0,0.7); color: #ff6b6b;
-      border: none; border-radius: 50%; width: 18px; height: 18px;
-      font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
-    }
-
-    .submit-btn {
-      background: linear-gradient(135deg,#e74c3c,#c0392b);
-      color: #fff; font-size: 1rem; font-weight: 800;
-      padding: 14px 28px; border-radius: 12px; border: none;
-      cursor: pointer; letter-spacing: 0.5px; width: 100%;
-      transition: transform 0.18s, filter 0.18s;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-    }
-    .submit-btn:hover { transform: translateY(-2px); filter: brightness(1.12); }
-    .submit-btn:active { transform: translateY(0); }
-    .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
-
-    .back-btn {
-      display: inline-flex; align-items: center; gap: 8px; align-self: center;
-      background: linear-gradient(135deg,#5865f2,#7289da);
-      color: #fff; font-size: 0.88rem; font-weight: 700;
-      padding: 11px 24px; border-radius: 10px; text-decoration: none;
-      transition: transform 0.18s, filter 0.18s;
-    }
-    .back-btn:hover { transform: translateY(-2px); filter: brightness(1.12); }
-
-    .toast {
-      position: fixed; bottom: 28px; left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: #2ecc71; color: #fff; font-weight: 700;
-      padding: 12px 26px; border-radius: 12px; font-size: 0.92rem;
-      z-index: 999; transition: transform 0.4s;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4); white-space: nowrap;
-    }
-    .toast.error { background: #e74c3c; }
-    .toast.show { transform: translateX(-50%) translateY(0); }
-
-    footer {
-      position: relative; z-index: 1; width: 100%;
-      border-top: 1px solid rgba(255,255,255,0.07);
-      padding: 18px 20px 22px;
-      display: flex; flex-direction: column; align-items: center; gap: 10px;
-      background: rgba(0,0,0,0.45); backdrop-filter: blur(6px); margin-top: auto;
-    }
-    .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.35); text-align: center; }
-    .btn-mathix {
-      background: linear-gradient(135deg,#1a1a2e,#16213e); color: #a0b4ff;
-      font-size: 0.82rem; font-weight: 600; padding: 9px 20px; border-radius: 8px;
-      text-decoration: none; border: 1px solid rgba(114,137,218,0.3);
-      transition: transform 0.18s, filter 0.18s;
-    }
-    .btn-mathix:hover { transform: translateY(-2px); filter: brightness(1.18); }
+    header { position:relative; z-index:1; width:100%; display:flex; align-items:center; justify-content:center; gap:14px; padding:28px 20px 12px; }
+    .h-logo { width:50px; height:50px; border-radius:50%; object-fit:cover; box-shadow:0 0 18px rgba(114,137,218,0.6); animation:shake 0.35s infinite; }
+    .h-title { font-size:clamp(1rem,3vw,1.6rem); font-weight:900; text-transform:uppercase; letter-spacing:1px; background:linear-gradient(135deg,#fff 30%,#7289da 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    main { position:relative; z-index:1; width:100%; max-width:640px; padding:8px 18px 60px; display:flex; flex-direction:column; gap:16px; }
+    .page-title { font-size:clamp(1.4rem,4vw,2rem); font-weight:900; text-align:center; background:linear-gradient(135deg,#ff5f5f,#ff9090); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .page-sub { text-align:center; font-size:0.8rem; color:rgba(255,255,255,0.38); letter-spacing:2px; text-transform:uppercase; margin-top:-8px; }
+    .card { background:rgba(255,255,255,0.04); border:1px solid rgba(114,137,218,0.18); border-radius:16px; padding:24px; backdrop-filter:blur(6px); display:flex; flex-direction:column; gap:16px; }
+    .field { display:flex; flex-direction:column; gap:6px; }
+    label { font-size:0.76rem; font-weight:700; color:#a0b4ff; letter-spacing:0.5px; text-transform:uppercase; }
+    label .req { color:#ff6b6b; }
+    input[type=text], textarea, select { background:rgba(255,255,255,0.05); border:1px solid rgba(114,137,218,0.28); border-radius:10px; color:#fff; font-family:inherit; font-size:0.92rem; padding:11px 13px; outline:none; transition:border-color 0.2s,background 0.2s; width:100%; }
+    input[type=text]:focus, textarea:focus, select:focus { border-color:#7289da; background:rgba(114,137,218,0.09); }
+    input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.26); }
+    textarea { resize:vertical; min-height:95px; line-height:1.5; }
+    select option { background:#1a1a2e; color:#fff; }
+    .file-zone { border:2px dashed rgba(114,137,218,0.3); border-radius:12px; padding:22px 16px; display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer; transition:border-color 0.2s,background 0.2s; position:relative; }
+    .file-zone.over { border-color:#7289da; background:rgba(114,137,218,0.08); }
+    .file-zone input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+    .fz-icon { font-size:1.8rem; }
+    .fz-text { font-size:0.86rem; color:rgba(255,255,255,0.48); text-align:center; }
+    .fz-text strong { color:#a0b4ff; }
+    .fz-hint { font-size:0.7rem; color:rgba(255,255,255,0.26); }
+    .previews { display:flex; flex-wrap:wrap; gap:8px; }
+    .pthumb { position:relative; width:82px; height:82px; border-radius:9px; overflow:hidden; border:1px solid rgba(114,137,218,0.3); flex-shrink:0; }
+    .pthumb img { width:100%; height:100%; object-fit:cover; }
+    .pthumb .ptag { width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; background:rgba(114,137,218,0.14); font-size:0.62rem; color:#c5d0ff; text-align:center; padding:4px; word-break:break-all; }
+    .pthumb .ptag span:first-child { font-size:1.5rem; }
+    .pthumb .rm { position:absolute; top:3px; right:3px; background:rgba(0,0,0,0.75); color:#ff6b6b; border:none; border-radius:50%; width:18px; height:18px; font-size:0.68rem; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+    .submit-btn { background:linear-gradient(135deg,#e74c3c,#c0392b); color:#fff; font-size:1rem; font-weight:800; padding:14px; border-radius:12px; border:none; cursor:pointer; width:100%; transition:transform 0.18s,filter 0.18s; display:flex; align-items:center; justify-content:center; gap:10px; }
+    .submit-btn:hover { transform:translateY(-2px); filter:brightness(1.12); }
+    .submit-btn:disabled { opacity:0.55; cursor:not-allowed; transform:none; }
+    .back-btn { display:inline-flex; align-items:center; gap:8px; align-self:center; background:linear-gradient(135deg,#5865f2,#7289da); color:#fff; font-size:0.86rem; font-weight:700; padding:11px 22px; border-radius:10px; text-decoration:none; transition:transform 0.18s,filter 0.18s; }
+    .back-btn:hover { transform:translateY(-2px); filter:brightness(1.12); }
+    .toast { position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(80px); background:#2ecc71; color:#fff; font-weight:700; padding:11px 24px; border-radius:12px; font-size:0.9rem; z-index:999; transition:transform 0.4s; box-shadow:0 4px 20px rgba(0,0,0,0.4); white-space:nowrap; }
+    .toast.error { background:#e74c3c; }
+    .toast.show { transform:translateX(-50%) translateY(0); }
+    footer { position:relative; z-index:1; width:100%; border-top:1px solid rgba(255,255,255,0.07); padding:16px 20px 20px; display:flex; flex-direction:column; align-items:center; gap:10px; background:rgba(0,0,0,0.45); backdrop-filter:blur(6px); margin-top:auto; }
+    .footer-copy { font-size:0.73rem; color:rgba(255,255,255,0.3); }
+    .btn-mathix { background:linear-gradient(135deg,#1a1a2e,#16213e); color:#a0b4ff; font-size:0.8rem; font-weight:600; padding:8px 18px; border-radius:8px; text-decoration:none; border:1px solid rgba(114,137,218,0.28); transition:transform 0.18s,filter 0.18s; }
+    .btn-mathix:hover { transform:translateY(-2px); filter:brightness(1.18); }
   </style>
 </head>
 <body>
-
   <canvas id="stars-canvas"></canvas>
   <div class="toast" id="toast"></div>
-
   <header>
-    <img src="logo.png" alt="Logo" class="header-logo" />
-    <span class="header-title">Misaki Anti Pédophile</span>
+    <img src="logo.png" alt="Logo" class="h-logo" />
+    <span class="h-title">Misaki Anti Pédophile</span>
   </header>
-
   <main>
     <h1 class="page-title">⛔ Signaler un suspect</h1>
     <p class="page-sub">Brigade Anti Pédo — Formulaire de report</p>
-
-    <div class="form-card">
-
+    <div class="card">
       <div class="field">
         <label>@ Discord du suspect <span class="req">*</span></label>
-        <input type="text" id="suspect-tag" placeholder="ex : @utilisateur" />
+        <input type="text" id="f-tag" placeholder="ex : @utilisateur" />
       </div>
-
       <div class="field">
         <label>ID Discord du suspect <span class="req">*</span></label>
-        <input type="text" id="suspect-id" placeholder="ex : 123456789012345678" maxlength="20" />
+        <input type="text" id="f-id" placeholder="ex : 123456789012345678" maxlength="20" />
       </div>
-
       <div class="field">
         <label>Votre @ Discord <span class="req">*</span></label>
-        <input type="text" id="reporter-tag" placeholder="ex : votre_pseudo" />
+        <input type="text" id="f-reporter" placeholder="ex : votre_pseudo" />
       </div>
-
       <div class="field">
-        <label>Raison du report <span class="req">*</span></label>
-        <select id="reason-select">
+        <label>Raison <span class="req">*</span></label>
+        <select id="f-reason">
           <option value="">— Sélectionner une raison —</option>
           <option>Comportement suspect en vocal avec des mineurs</option>
           <option>Envoi de contenu inapproprié à des mineurs</option>
@@ -213,177 +94,116 @@
           <option>Autre (préciser dans les détails)</option>
         </select>
       </div>
-
       <div class="field">
         <label>Détails supplémentaires</label>
-        <textarea id="details" placeholder="Décrivez précisément ce que vous avez observé : heure, salon vocal, comportement, mots utilisés..."></textarea>
+        <textarea id="f-details" placeholder="Heure, salon vocal, comportement exact, mots utilisés..."></textarea>
       </div>
-
       <div class="field">
-        <label>Preuves — screenshots / enregistrements <span class="req">*</span></label>
-        <div class="file-zone" id="file-zone">
-          <input type="file" id="file-input" accept="image/*,video/*,audio/*" multiple />
-          <div class="file-zone-icon">📎</div>
-          <div class="file-zone-text"><strong>Cliquer</strong> ou glisser les fichiers ici</div>
-          <div class="file-zone-hint">Images, vidéos et enregistrements acceptés</div>
+        <label>Preuves <span class="req">*</span> <span style="font-weight:400;color:rgba(255,255,255,0.3);font-size:0.7rem;text-transform:none;">(images, vidéos, audio)</span></label>
+        <div class="file-zone" id="fzone">
+          <input type="file" id="finput" accept="image/*,video/*,audio/*" multiple />
+          <div class="fz-icon">📎</div>
+          <div class="fz-text"><strong>Cliquer</strong> ou glisser ici</div>
+          <div class="fz-hint">Images · Vidéos · Enregistrements</div>
         </div>
-        <div class="file-preview" id="file-preview"></div>
+        <div class="previews" id="previews"></div>
       </div>
-
-      <button class="submit-btn" id="submit-btn" onclick="submitReport()">
-        ⛔ Envoyer le report
-      </button>
-
+      <button class="submit-btn" id="sbtn" onclick="submit()">⛔ Envoyer le report</button>
     </div>
-
     <a href="index.html" class="back-btn">← Retour à l'accueil</a>
   </main>
-
   <footer>
     <p class="footer-copy">© 2026 MathiX Games Corporation - Tous droits réservés</p>
     <a href="https://mathix224.github.io/MathiX-Games-Corporation/index.html" target="_blank" rel="noopener" class="btn-mathix">MathiX Games Corporation</a>
   </footer>
-
   <script>
-    // ════════════════════════════════
-    //  CONFIG — remplace la clé API
-    // ════════════════════════════════
+    // ══ CONFIGURATION — colle ta clé ici ══
     const BIN_ID  = '6a2db720f5f4af5e29ed1947';
-    const API_KEY = '$2a$10$x5Jn9LVnsCslVI81a8CHr.CvzzrxWXr83waavP/YxfRxmLkHVJPtW'; // ← colle ta X-Master-Key ici
+    const API_KEY = '$2a$10$mSH7beQoI9sAGU8Vy4CW6ewo48q4s27aFwDYBYJBC0W4ZaNSD7NjO';
 
-    // ── Stars ──
-    const canvas = document.getElementById('stars-canvas');
-    const ctx    = canvas.getContext('2d');
-    let stars    = [];
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    function initStars() {
-      stars = [];
-      for (let i = 0; i < 220; i++)
-        stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height,
-                     r: Math.random()*1.8+0.3, speed: Math.random()*6+0.5, alpha: Math.random()*0.6+0.4 });
+    // Stars
+    const cv = document.getElementById('stars-canvas'), cx = cv.getContext('2d');
+    let st = [];
+    function rsz() { cv.width=innerWidth; cv.height=innerHeight; }
+    function ist() { st=[]; for(let i=0;i<220;i++) st.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*1.8+0.3,s:Math.random()*6+0.5,a:Math.random()*0.6+0.4}); }
+    function dst() { cx.clearRect(0,0,cv.width,cv.height); for(const s of st){s.y+=s.s;if(s.y>cv.height){s.y=0;s.x=Math.random()*cv.width;}cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);cx.fillStyle=`rgba(255,255,255,${s.a})`;cx.fill();} requestAnimationFrame(dst); }
+    window.addEventListener('resize',()=>{rsz();ist();}); rsz();ist();dst();
+
+    // Files
+    let files = [];
+    const fi = document.getElementById('finput');
+    const fz = document.getElementById('fzone');
+    fi.addEventListener('change', () => { addF(fi.files); fi.value=''; });
+    fz.addEventListener('dragover',  e => { e.preventDefault(); fz.classList.add('over'); });
+    fz.addEventListener('dragleave', () => fz.classList.remove('over'));
+    fz.addEventListener('drop', e => { e.preventDefault(); fz.classList.remove('over'); addF(e.dataTransfer.files); });
+    function addF(list) {
+      for(const f of list) if(!files.find(x=>x.name===f.name&&x.size===f.size)) files.push(f);
+      renderF();
     }
-    function drawStars() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      for (const s of stars) {
-        s.y += s.speed;
-        if (s.y > canvas.height) { s.y = 0; s.x = Math.random()*canvas.width; }
-        ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-        ctx.fillStyle = `rgba(255,255,255,${s.alpha})`; ctx.fill();
-      }
-      requestAnimationFrame(drawStars);
-    }
-    window.addEventListener('resize', () => { resize(); initStars(); });
-    resize(); initStars(); drawStars();
-
-    // ── Files ──
-    let selectedFiles = [];
-    const fileInput   = document.getElementById('file-input');
-    const filePreview = document.getElementById('file-preview');
-    const fileZone    = document.getElementById('file-zone');
-
-    fileInput.addEventListener('change', () => {
-      addFiles(fileInput.files); fileInput.value = '';
-    });
-    fileZone.addEventListener('dragover',  e => { e.preventDefault(); fileZone.classList.add('dragover'); });
-    fileZone.addEventListener('dragleave', () => fileZone.classList.remove('dragover'));
-    fileZone.addEventListener('drop', e => {
-      e.preventDefault(); fileZone.classList.remove('dragover');
-      addFiles(e.dataTransfer.files);
-    });
-
-    function addFiles(list) {
-      for (const f of list)
-        if (!selectedFiles.find(x => x.name===f.name && x.size===f.size)) selectedFiles.push(f);
-      renderPreviews();
-    }
-
-    function renderPreviews() {
-      filePreview.innerHTML = '';
-      selectedFiles.forEach((f, i) => {
-        const div = document.createElement('div');
-        div.className = 'preview-thumb';
-        if (f.type.startsWith('image/')) {
-          const url = URL.createObjectURL(f);
-          div.innerHTML = `<img src="${url}" alt="${f.name}" /><button class="remove-btn" onclick="removeFile(${i})">✕</button>`;
+    function renderF() {
+      const p = document.getElementById('previews'); p.innerHTML='';
+      files.forEach((f,i) => {
+        const d = document.createElement('div'); d.className='pthumb';
+        if(f.type.startsWith('image/')) {
+          d.innerHTML=`<img src="${URL.createObjectURL(f)}" /><button class="rm" onclick="remF(${i})">✕</button>`;
         } else {
-          div.innerHTML = `<div class="file-tag"><span style="font-size:1.4rem">${f.type.startsWith('video/')? '🎥':'🎙️'}</span><span>${f.name.slice(0,12)}</span></div><button class="remove-btn" onclick="removeFile(${i})">✕</button>`;
+          const ico = f.type.startsWith('video/') ? '🎥' : '🎙️';
+          d.innerHTML=`<div class="ptag"><span>${ico}</span><span>${f.name.slice(0,14)}</span></div><button class="rm" onclick="remF(${i})">✕</button>`;
         }
-        filePreview.appendChild(div);
+        p.appendChild(d);
       });
     }
-    function removeFile(i) { selectedFiles.splice(i,1); renderPreviews(); }
+    function remF(i) { files.splice(i,1); renderF(); }
 
-    // ── Toast ──
-    function showToast(msg, isError=false) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.className = 'toast' + (isError ? ' error' : '') + ' show';
-      setTimeout(() => { t.className = 'toast' + (isError ? ' error' : ''); }, 3500);
+    // Toast
+    function toast(m,err=false) {
+      const t=document.getElementById('toast'); t.textContent=m;
+      t.className='toast'+(err?' error':'')+' show';
+      setTimeout(()=>{ t.className='toast'+(err?' error':''); },3500);
     }
 
-    // ── Submit ──
-    async function submitReport() {
-      const tag      = document.getElementById('suspect-tag').value.trim();
-      const sid      = document.getElementById('suspect-id').value.trim();
-      const reporter = document.getElementById('reporter-tag').value.trim();
-      const reason   = document.getElementById('reason-select').value;
-      const details  = document.getElementById('details').value.trim();
+    // Submit
+    async function submit() {
+      const tag = document.getElementById('f-tag').value.trim();
+      const sid = document.getElementById('f-id').value.trim();
+      const rep = document.getElementById('f-reporter').value.trim();
+      const rsn = document.getElementById('f-reason').value;
+      const det = document.getElementById('f-details').value.trim();
+      if(!tag||!sid||!rep||!rsn) { toast('⚠️ Remplis tous les champs obligatoires !',true); return; }
+      if(!files.length) { toast('⚠️ Ajoute au moins une preuve !',true); return; }
 
-      if (!tag || !sid || !reporter || !reason) {
-        showToast('⚠️ Remplis tous les champs obligatoires !', true); return;
-      }
-      if (selectedFiles.length === 0) {
-        showToast('⚠️ Ajoute au moins une preuve !', true); return;
-      }
-
-      const btn = document.getElementById('submit-btn');
-      btn.disabled = true; btn.textContent = '⏳ Envoi en cours...';
+      const btn = document.getElementById('sbtn');
+      btn.disabled=true; btn.textContent='⏳ Envoi en cours...';
 
       try {
-        // Convert files to base64
-        const filesData = await Promise.all(selectedFiles.map(f => new Promise(res => {
+        // base64
+        const fdata = await Promise.all(files.map(f => new Promise(res => {
           const r = new FileReader();
-          r.onload = () => res({ name: f.name, type: f.type, size: f.size, data: r.result });
+          r.onload = () => res({ name:f.name, type:f.type, data:r.result });
           r.readAsDataURL(f);
         })));
 
-        // Fetch current bin
-        const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-          headers: { 'X-Master-Key': API_KEY }
-        });
-        const getData = await getRes.json();
-        let reports = Array.isArray(getData.record) ? getData.record : [];
-        reports = reports.filter(r => !r.init);
+        // GET current bin
+        const g = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers:{'X-Master-Key':API_KEY} });
+        const gd = await g.json();
+        let reps = Array.isArray(gd.record) ? gd.record.filter(x=>!x.init) : [];
 
-        reports.push({
-          id:         Date.now().toString(),
-          date:       new Date().toLocaleString('fr-FR'),
-          suspectTag: tag,
-          suspectId:  sid,
-          reporter,
-          reason,
-          details,
-          filesData,
-          status: 'new'
-        });
+        reps.push({ id:Date.now().toString(), date:new Date().toLocaleString('fr-FR'), suspectTag:tag, suspectId:sid, reporter:rep, reason:rsn, details:det, files:fdata, status:'new' });
 
         await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-          method:  'PUT',
-          headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-          body:    JSON.stringify(reports)
+          method:'PUT',
+          headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},
+          body:JSON.stringify(reps)
         });
 
-        showToast('✅ Report envoyé avec succès !');
-        ['suspect-tag','suspect-id','reporter-tag','details'].forEach(id => document.getElementById(id).value = '');
-        document.getElementById('reason-select').value = '';
-        selectedFiles = []; renderPreviews();
+        toast('✅ Report envoyé avec succès !');
+        ['f-tag','f-id','f-reporter','f-details'].forEach(id=>document.getElementById(id).value='');
+        document.getElementById('f-reason').value='';
+        files=[]; renderF();
+      } catch(e) { console.error(e); toast('❌ Erreur. Vérifie la clé API.',true); }
 
-      } catch(err) {
-        console.error(err);
-        showToast('❌ Erreur lors de l\'envoi. Vérifie la clé API.', true);
-      }
-
-      btn.disabled = false; btn.innerHTML = '⛔ Envoyer le report';
+      btn.disabled=false; btn.innerHTML='⛔ Envoyer le report';
     }
   </script>
 </body>
