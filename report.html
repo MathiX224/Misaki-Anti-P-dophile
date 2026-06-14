@@ -118,9 +118,9 @@
   </footer>
   <script>
     // ══ CONFIGURATION — colle ta clé ici ══
-    const BIN_ID  = '6a2db720f5f4af5e29ed1947';
-    const API_KEY = '$2a$10$mSH7beQoI9sAGU8Vy4CW6ewo48q4s27aFwDYBYJBC0W4ZaNSD7NjO';
-
+    const BIN_ID  = '6a2e8074f5f4af5e29ef92ea';
+    const API_KEY = '$2a$10$rBDXJZuPm6IsqFBzHoRR2upk.oj0n0AKpp0c3yHSDSAHwrNkUdh2W';
+ 
     // Stars
     const cv = document.getElementById('stars-canvas'), cx = cv.getContext('2d');
     let st = [];
@@ -128,7 +128,7 @@
     function ist() { st=[]; for(let i=0;i<220;i++) st.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*1.8+0.3,s:Math.random()*6+0.5,a:Math.random()*0.6+0.4}); }
     function dst() { cx.clearRect(0,0,cv.width,cv.height); for(const s of st){s.y+=s.s;if(s.y>cv.height){s.y=0;s.x=Math.random()*cv.width;}cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);cx.fillStyle=`rgba(255,255,255,${s.a})`;cx.fill();} requestAnimationFrame(dst); }
     window.addEventListener('resize',()=>{rsz();ist();}); rsz();ist();dst();
-
+ 
     // Files
     let files = [];
     const fi = document.getElementById('finput');
@@ -155,14 +155,14 @@
       });
     }
     function remF(i) { files.splice(i,1); renderF(); }
-
+ 
     // Toast
     function toast(m,err=false) {
       const t=document.getElementById('toast'); t.textContent=m;
       t.className='toast'+(err?' error':'')+' show';
       setTimeout(()=>{ t.className='toast'+(err?' error':''); },3500);
     }
-
+ 
     // Submit
     async function submit() {
       const tag = document.getElementById('f-tag').value.trim();
@@ -172,10 +172,10 @@
       const det = document.getElementById('f-details').value.trim();
       if(!tag||!sid||!rep||!rsn) { toast('⚠️ Remplis tous les champs obligatoires !',true); return; }
       if(!files.length) { toast('⚠️ Ajoute au moins une preuve !',true); return; }
-
+ 
       const btn = document.getElementById('sbtn');
       btn.disabled=true; btn.textContent='⏳ Envoi en cours...';
-
+ 
       try {
         // base64
         const fdata = await Promise.all(files.map(f => new Promise(res => {
@@ -183,26 +183,26 @@
           r.onload = () => res({ name:f.name, type:f.type, data:r.result });
           r.readAsDataURL(f);
         })));
-
+ 
         // GET current bin
         const g = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers:{'X-Master-Key':API_KEY} });
         const gd = await g.json();
         let reps = Array.isArray(gd.record) ? gd.record.filter(x=>!x.init) : [];
-
+ 
         reps.push({ id:Date.now().toString(), date:new Date().toLocaleString('fr-FR'), suspectTag:tag, suspectId:sid, reporter:rep, reason:rsn, details:det, files:fdata, status:'new' });
-
+ 
         await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
           method:'PUT',
           headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},
           body:JSON.stringify(reps)
         });
-
+ 
         toast('✅ Report envoyé avec succès !');
         ['f-tag','f-id','f-reporter','f-details'].forEach(id=>document.getElementById(id).value='');
         document.getElementById('f-reason').value='';
         files=[]; renderF();
       } catch(e) { console.error(e); toast('❌ Erreur. Vérifie la clé API.',true); }
-
+ 
       btn.disabled=false; btn.innerHTML='⛔ Envoyer le report';
     }
   </script>
