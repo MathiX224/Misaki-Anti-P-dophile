@@ -6,321 +6,170 @@
   <title>Admin – Misaki Anti Pédophile</title>
   <link rel="icon" type="image/png" href="logo.png" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: #000; color: #fff;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      min-height: 100vh; display: flex; flex-direction: column;
-      align-items: center; overflow-x: hidden; position: relative;
-    }
-    #stars-canvas { position: fixed; inset: 0; z-index: 0; }
-
-    /* ══ LOGIN ══ */
-    #login-screen {
-      position: relative; z-index: 1;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      min-height: 100vh; width: 100%; padding: 20px;
-    }
-    .login-box {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(114,137,218,0.25);
-      border-radius: 18px; padding: 36px 30px;
-      width: 100%; max-width: 390px;
-      display: flex; flex-direction: column; align-items: center; gap: 20px;
-      backdrop-filter: blur(8px);
-    }
-    .login-logo {
-      width: 82px; height: 82px; border-radius: 50%; object-fit: cover;
-      box-shadow: 0 0 26px rgba(114,137,218,0.55); animation: shake 0.35s infinite;
-    }
-    .login-title {
-      font-size: 1.35rem; font-weight: 900; text-transform: uppercase; text-align: center;
-      background: linear-gradient(135deg,#fff 30%,#7289da 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .login-sub { font-size: 0.78rem; color: rgba(255,255,255,0.38); letter-spacing: 1.5px; text-transform: uppercase; }
-    .lfield { display: flex; flex-direction: column; gap: 6px; width: 100%; }
-    .lfield label { font-size: 0.78rem; font-weight: 700; color: #a0b4ff; text-transform: uppercase; letter-spacing: 0.5px; }
-    .lfield input {
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(114,137,218,0.28);
-      border-radius: 10px; color: #fff; font-family: inherit; font-size: 0.93rem;
-      padding: 11px 13px; outline: none; transition: border-color 0.2s; width: 100%;
-    }
-    .lfield input:focus { border-color: #7289da; background: rgba(114,137,218,0.1); }
-    .lfield input::placeholder { color: rgba(255,255,255,0.28); }
-    .login-btn {
-      background: linear-gradient(135deg,#5865f2,#7289da); color: #fff;
-      font-size: 0.95rem; font-weight: 800; padding: 13px; border-radius: 10px;
-      border: none; cursor: pointer; width: 100%; letter-spacing: 0.5px;
-      transition: filter 0.18s, transform 0.18s;
-    }
-    .login-btn:hover { filter: brightness(1.14); transform: translateY(-2px); }
-    .login-error { font-size: 0.83rem; color: #ff6b6b; text-align: center; display: none; }
-
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:#000; color:#fff; font-family:'Segoe UI',Arial,sans-serif; min-height:100vh; display:flex; flex-direction:column; align-items:center; overflow-x:hidden; position:relative; }
+    #stars-canvas { position:fixed; inset:0; z-index:0; }
     @keyframes shake {
-      0%   { transform: translate(0,0) rotate(0deg); }
-      15%  { transform: translate(-3px,2px) rotate(-1deg); }
-      30%  { transform: translate(3px,-2px) rotate(1deg); }
-      45%  { transform: translate(-2px,3px) rotate(-0.5deg); }
-      60%  { transform: translate(2px,-3px) rotate(0.5deg); }
-      75%  { transform: translate(-3px,-1px) rotate(-1deg); }
-      90%  { transform: translate(3px,1px) rotate(1deg); }
-      100% { transform: translate(0,0) rotate(0deg); }
+      0%,100% { transform:translate(0,0) rotate(0deg); }
+      15% { transform:translate(-3px,2px) rotate(-1deg); }
+      30% { transform:translate(3px,-2px) rotate(1deg); }
+      45% { transform:translate(-2px,3px) rotate(-0.5deg); }
+      60% { transform:translate(2px,-3px) rotate(0.5deg); }
+      75% { transform:translate(-3px,-1px) rotate(-1deg); }
+      90% { transform:translate(3px,1px) rotate(1deg); }
     }
 
-    /* ══ PANEL ══ */
-    #admin-panel { display: none; flex-direction: column; align-items: center; width: 100%; }
+    /* ── LOGIN ── */
+    #login-screen { position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; width:100%; padding:20px; }
+    .login-box { background:rgba(255,255,255,0.04); border:1px solid rgba(114,137,218,0.25); border-radius:18px; padding:34px 28px; width:100%; max-width:380px; display:flex; flex-direction:column; align-items:center; gap:18px; backdrop-filter:blur(8px); }
+    .login-logo { width:80px; height:80px; border-radius:50%; object-fit:cover; box-shadow:0 0 26px rgba(114,137,218,0.5); animation:shake 0.35s infinite; }
+    .login-title { font-size:1.3rem; font-weight:900; text-transform:uppercase; text-align:center; background:linear-gradient(135deg,#fff 30%,#7289da 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .login-sub { font-size:0.76rem; color:rgba(255,255,255,0.36); letter-spacing:1.5px; text-transform:uppercase; }
+    .lf { display:flex; flex-direction:column; gap:6px; width:100%; }
+    .lf label { font-size:0.76rem; font-weight:700; color:#a0b4ff; text-transform:uppercase; letter-spacing:0.5px; }
+    .lf input { background:rgba(255,255,255,0.06); border:1px solid rgba(114,137,218,0.28); border-radius:10px; color:#fff; font-family:inherit; font-size:0.92rem; padding:11px 13px; outline:none; transition:border-color 0.2s; width:100%; }
+    .lf input:focus { border-color:#7289da; background:rgba(114,137,218,0.1); }
+    .lf input::placeholder { color:rgba(255,255,255,0.26); }
+    .login-btn { background:linear-gradient(135deg,#5865f2,#7289da); color:#fff; font-size:0.94rem; font-weight:800; padding:13px; border-radius:10px; border:none; cursor:pointer; width:100%; transition:filter 0.18s,transform 0.18s; }
+    .login-btn:hover { filter:brightness(1.14); transform:translateY(-2px); }
+    .login-err { font-size:0.82rem; color:#ff6b6b; text-align:center; display:none; }
 
-    header {
-      position: relative; z-index: 1; width: 100%;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 22px 26px 14px; flex-wrap: wrap; gap: 12px;
-    }
-    .h-left { display: flex; align-items: center; gap: 12px; }
-    .h-logo {
-      width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
-      box-shadow: 0 0 14px rgba(114,137,218,0.5); animation: shake 0.35s infinite;
-    }
-    .h-title {
-      font-size: clamp(0.95rem,2.5vw,1.4rem); font-weight: 900; text-transform: uppercase;
-      background: linear-gradient(135deg,#fff 30%,#7289da 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .h-right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .hbtn {
-      font-size: 0.78rem; font-weight: 700; padding: 7px 14px; border-radius: 8px;
-      border: none; cursor: pointer; text-decoration: none;
-      transition: filter 0.18s, transform 0.18s;
-      display: inline-flex; align-items: center; gap: 5px;
-    }
-    .hbtn:hover { filter: brightness(1.15); transform: translateY(-1px); }
-    .hbtn-home    { background: rgba(114,137,218,0.15); color: #a0b4ff; border: 1px solid rgba(114,137,218,0.28); }
-    .hbtn-refresh { background: rgba(46,204,113,0.14);  color: #6ee89f; border: 1px solid rgba(46,204,113,0.28); }
-    .hbtn-clear   { background: rgba(255,193,7,0.1);    color: #ffd060; border: 1px solid rgba(255,193,7,0.22); }
-    .hbtn-logout  { background: rgba(231,76,60,0.14);   color: #ff8888; border: 1px solid rgba(231,76,60,0.28); }
+    /* ── PANEL ── */
+    #panel { display:none; flex-direction:column; align-items:center; width:100%; }
+    header { position:relative; z-index:1; width:100%; display:flex; align-items:center; justify-content:space-between; padding:20px 24px 12px; flex-wrap:wrap; gap:10px; }
+    .hl { display:flex; align-items:center; gap:10px; }
+    .hl-logo { width:38px; height:38px; border-radius:50%; object-fit:cover; box-shadow:0 0 12px rgba(114,137,218,0.5); animation:shake 0.35s infinite; }
+    .hl-title { font-size:clamp(0.9rem,2.5vw,1.35rem); font-weight:900; text-transform:uppercase; background:linear-gradient(135deg,#fff 30%,#7289da 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .hr { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .hb { font-size:0.76rem; font-weight:700; padding:7px 13px; border-radius:8px; border:none; cursor:pointer; text-decoration:none; transition:filter 0.18s,transform 0.18s; display:inline-flex; align-items:center; gap:5px; }
+    .hb:hover { filter:brightness(1.15); transform:translateY(-1px); }
+    .hb-home    { background:rgba(114,137,218,0.14); color:#a0b4ff; border:1px solid rgba(114,137,218,0.26); }
+    .hb-refresh { background:rgba(46,204,113,0.13);  color:#6ee89f; border:1px solid rgba(46,204,113,0.26); }
+    .hb-clear   { background:rgba(255,193,7,0.1);    color:#ffd060; border:1px solid rgba(255,193,7,0.2); }
+    .hb-logout  { background:rgba(231,76,60,0.13);   color:#ff8888; border:1px solid rgba(231,76,60,0.26); }
 
-    main {
-      position: relative; z-index: 1; width: 100%; max-width: 920px;
-      padding: 0 18px 60px; display: flex; flex-direction: column; gap: 18px;
-    }
+    main { position:relative; z-index:1; width:100%; max-width:920px; padding:0 16px 60px; display:flex; flex-direction:column; gap:16px; }
 
     /* Stats */
-    .stats { display: flex; flex-wrap: wrap; gap: 10px; }
-    .stat {
-      flex: 1; min-width: 130px;
-      background: rgba(255,255,255,0.04); border: 1px solid rgba(114,137,218,0.18);
-      border-radius: 12px; padding: 14px 16px;
-      display: flex; flex-direction: column; gap: 4px;
-    }
-    .stat-lbl { font-size: 0.7rem; color: rgba(255,255,255,0.38); text-transform: uppercase; letter-spacing: 1px; }
-    .stat-val { font-size: 1.55rem; font-weight: 900; }
+    .stats { display:flex; flex-wrap:wrap; gap:10px; }
+    .stat { flex:1; min-width:120px; background:rgba(255,255,255,0.04); border:1px solid rgba(114,137,218,0.16); border-radius:12px; padding:13px 15px; display:flex; flex-direction:column; gap:4px; }
+    .stat-l { font-size:0.68rem; color:rgba(255,255,255,0.36); text-transform:uppercase; letter-spacing:1px; }
+    .stat-v { font-size:1.5rem; font-weight:900; }
 
-    /* Section titles */
-    .stitle {
-      font-size: 1rem; font-weight: 800; color: #fff;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .badge {
-      background: #e74c3c; color: #fff; font-size: 0.68rem;
-      font-weight: 800; padding: 2px 8px; border-radius: 20px;
-    }
+    /* Section title */
+    .stitle { font-size:0.98rem; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px; }
+    .badge { background:#e74c3c; color:#fff; font-size:0.66rem; font-weight:800; padding:2px 8px; border-radius:20px; }
 
     /* Filters */
-    .filters { display: flex; gap: 8px; flex-wrap: wrap; }
-    .fbtn {
-      font-size: 0.78rem; font-weight: 700; padding: 6px 14px; border-radius: 8px;
-      border: 1px solid rgba(114,137,218,0.22);
-      background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.45);
-      cursor: pointer; transition: all 0.18s;
-    }
-    .fbtn.active, .fbtn:hover { background: rgba(114,137,218,0.2); color: #a0b4ff; border-color: #7289da; }
+    .filters { display:flex; gap:8px; flex-wrap:wrap; }
+    .fb { font-size:0.76rem; font-weight:700; padding:6px 13px; border-radius:8px; border:1px solid rgba(114,137,218,0.2); background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.42); cursor:pointer; transition:all 0.18s; }
+    .fb.on, .fb:hover { background:rgba(114,137,218,0.2); color:#a0b4ff; border-color:#7289da; }
 
-    /* Report cards */
-    .rlist { display: flex; flex-direction: column; gap: 14px; }
+    /* Report list */
+    .rlist { display:flex; flex-direction:column; gap:12px; }
+    .rcard { background:rgba(255,255,255,0.04); border:1px solid rgba(231,76,60,0.2); border-radius:14px; overflow:hidden; backdrop-filter:blur(4px); transition:border-color 0.2s; }
+    .rcard:hover { border-color:rgba(231,76,60,0.48); }
+    .rcard.done { border-color:rgba(46,204,113,0.2); opacity:0.72; }
+    .rcard.done:hover { border-color:rgba(46,204,113,0.44); }
 
-    .rcard {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(231,76,60,0.22);
-      border-radius: 14px; overflow: hidden;
-      backdrop-filter: blur(4px); transition: border-color 0.2s;
-    }
-    .rcard:hover { border-color: rgba(231,76,60,0.5); }
-    .rcard.resolved { border-color: rgba(46,204,113,0.22); opacity: 0.75; }
-    .rcard.resolved:hover { border-color: rgba(46,204,113,0.45); }
-
-    /* Card top bar */
-    .rcard-top {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 18px; gap: 10px; flex-wrap: wrap;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .rcard-meta { display: flex; flex-direction: column; gap: 2px; }
-    .rcard-id   { font-size: 0.7rem; color: rgba(255,255,255,0.28); font-family: monospace; }
-    .rcard-date { font-size: 0.73rem; color: rgba(255,255,255,0.38); }
-    .sbadge {
-      font-size: 0.68rem; font-weight: 800; padding: 4px 12px;
-      border-radius: 20px; white-space: nowrap;
-    }
-    .s-new      { background: rgba(231,76,60,0.18); color: #ff8888; border: 1px solid rgba(231,76,60,0.28); }
-    .s-resolved { background: rgba(46,204,113,0.14); color: #6ee89f; border: 1px solid rgba(46,204,113,0.28); }
+    /* Card header */
+    .rc-head { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid rgba(255,255,255,0.06); flex-wrap:wrap; gap:8px; }
+    .rc-meta { display:flex; flex-direction:column; gap:2px; }
+    .rc-id   { font-size:0.68rem; color:rgba(255,255,255,0.26); font-family:monospace; }
+    .rc-date { font-size:0.71rem; color:rgba(255,255,255,0.36); }
+    .sbadge  { font-size:0.66rem; font-weight:800; padding:4px 12px; border-radius:20px; white-space:nowrap; }
+    .s-new  { background:rgba(231,76,60,0.17); color:#ff8888; border:1px solid rgba(231,76,60,0.26); }
+    .s-done { background:rgba(46,204,113,0.13); color:#6ee89f; border:1px solid rgba(46,204,113,0.26); }
 
     /* Card body */
-    .rcard-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; }
+    .rc-body { padding:14px 16px; display:flex; flex-direction:column; gap:12px; }
 
-    /* Fields grid */
-    .rfields { display: grid; grid-template-columns: repeat(auto-fill,minmax(190px,1fr)); gap: 10px; }
-    .rfield { display: flex; flex-direction: column; gap: 3px; }
-    .rfield-lbl { font-size: 0.68rem; color: rgba(255,255,255,0.32); text-transform: uppercase; letter-spacing: 0.5px; }
-    .rfield-val { font-size: 0.88rem; color: #e0e4ff; word-break: break-all; }
+    /* Fields */
+    .rfields { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; }
+    .rf { display:flex; flex-direction:column; gap:3px; }
+    .rf-l { font-size:0.66rem; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:0.5px; }
+    .rf-v { font-size:0.86rem; color:#e0e4ff; word-break:break-all; }
 
     /* Reason */
-    .rreason {
-      background: rgba(231,76,60,0.07); border: 1px solid rgba(231,76,60,0.18);
-      border-radius: 8px; padding: 10px 14px;
-      font-size: 0.86rem; color: #ffaaaa; line-height: 1.5;
-    }
+    .reason-box { background:rgba(231,76,60,0.07); border:1px solid rgba(231,76,60,0.17); border-radius:8px; padding:9px 13px; font-size:0.84rem; color:#ffaaaa; line-height:1.5; }
 
     /* Details */
-    .rdetails-box { display: flex; flex-direction: column; gap: 6px; }
-    .rdetails-lbl { font-size: 0.68rem; color: rgba(255,255,255,0.32); text-transform: uppercase; letter-spacing: 0.5px; }
-    .rdetails {
-      background: rgba(114,137,218,0.06); border-left: 3px solid rgba(114,137,218,0.4);
-      border-radius: 0 8px 8px 0; padding: 10px 14px;
-      font-size: 0.86rem; color: rgba(255,255,255,0.72); line-height: 1.65;
-      white-space: pre-wrap; word-break: break-word;
-    }
+    .details-box { display:flex; flex-direction:column; gap:6px; }
+    .details-lbl { font-size:0.66rem; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:0.5px; }
+    .details-txt { background:rgba(114,137,218,0.06); border-left:3px solid rgba(114,137,218,0.38); border-radius:0 8px 8px 0; padding:10px 13px; font-size:0.84rem; color:rgba(255,255,255,0.7); line-height:1.65; white-space:pre-wrap; word-break:break-word; }
 
     /* Proofs */
-    .rproofs-box { display: flex; flex-direction: column; gap: 8px; }
-    .rproofs-lbl { font-size: 0.68rem; color: rgba(255,255,255,0.32); text-transform: uppercase; letter-spacing: 0.5px; }
-    .rproofs-grid { display: flex; flex-wrap: wrap; gap: 10px; }
-    .proof-img-wrap {
-      position: relative; width: 110px; height: 110px;
-      border-radius: 10px; overflow: hidden;
-      border: 1px solid rgba(114,137,218,0.3);
-      cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .proof-img-wrap:hover { transform: scale(1.04); box-shadow: 0 4px 18px rgba(114,137,218,0.3); }
-    .proof-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
-    .proof-img-wrap .zoom-icon {
-      position: absolute; inset: 0; background: rgba(0,0,0,0.45);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem; opacity: 0; transition: opacity 0.2s;
-    }
-    .proof-img-wrap:hover .zoom-icon { opacity: 1; }
-    .proof-file {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      width: 110px; height: 110px; border-radius: 10px; gap: 5px;
-      background: rgba(114,137,218,0.1); border: 1px solid rgba(114,137,218,0.25);
-    }
-    .proof-file span:first-child { font-size: 1.8rem; }
-    .proof-file span:last-child { font-size: 0.65rem; color: #c5d0ff; text-align: center; padding: 0 6px; word-break: break-all; }
+    .proofs-box { display:flex; flex-direction:column; gap:8px; }
+    .proofs-lbl { font-size:0.66rem; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:0.5px; }
+    .proofs-grid { display:flex; flex-wrap:wrap; gap:10px; }
+
+    /* Image proof */
+    .pimg-wrap { position:relative; width:108px; height:108px; border-radius:10px; overflow:hidden; border:1px solid rgba(114,137,218,0.28); cursor:pointer; transition:transform 0.2s,box-shadow 0.2s; flex-shrink:0; }
+    .pimg-wrap:hover { transform:scale(1.04); box-shadow:0 4px 16px rgba(114,137,218,0.28); }
+    .pimg-wrap img { width:100%; height:100%; object-fit:cover; }
+    .pimg-wrap .zoom { position:absolute; inset:0; background:rgba(0,0,0,0.42); display:flex; align-items:center; justify-content:center; font-size:1.4rem; opacity:0; transition:opacity 0.2s; }
+    .pimg-wrap:hover .zoom { opacity:1; }
+
+    /* Video proof */
+    .pvid-wrap { display:flex; flex-direction:column; gap:6px; width:100%; }
+    .pvid-lbl { font-size:0.72rem; color:#a0b4ff; }
+    .pvid-wrap video { width:100%; max-width:420px; border-radius:10px; border:1px solid rgba(114,137,218,0.28); background:#000; outline:none; }
+
+    /* Audio proof */
+    .paud-wrap { display:flex; flex-direction:column; gap:5px; }
+    .paud-lbl { font-size:0.72rem; color:#a0b4ff; }
+    .paud-wrap audio { width:100%; max-width:360px; }
 
     /* Actions */
-    .ractions { display: flex; gap: 8px; flex-wrap: wrap; padding-top: 4px; }
-    .abtn {
-      font-size: 0.78rem; font-weight: 700; padding: 8px 16px; border-radius: 8px;
-      border: none; cursor: pointer; transition: filter 0.18s, transform 0.18s;
-    }
-    .abtn:hover { filter: brightness(1.14); transform: translateY(-1px); }
-    .abtn-resolve { background: rgba(46,204,113,0.18); color: #6ee89f; border: 1px solid rgba(46,204,113,0.28); }
-    .abtn-delete  { background: rgba(231,76,60,0.14); color: #ff8888; border: 1px solid rgba(231,76,60,0.24); }
+    .actions { display:flex; gap:8px; flex-wrap:wrap; padding-top:2px; }
+    .ab { font-size:0.76rem; font-weight:700; padding:7px 15px; border-radius:8px; border:none; cursor:pointer; transition:filter 0.18s,transform 0.18s; }
+    .ab:hover { filter:brightness(1.14); transform:translateY(-1px); }
+    .ab-ok  { background:rgba(46,204,113,0.17); color:#6ee89f; border:1px solid rgba(46,204,113,0.26); }
+    .ab-del { background:rgba(231,76,60,0.13); color:#ff8888; border:1px solid rgba(231,76,60,0.22); }
 
     /* Empty / loading */
-    .empty { text-align: center; padding: 48px 20px; color: rgba(255,255,255,0.28); }
-    .empty .eicon { font-size: 2.8rem; margin-bottom: 10px; }
-    .loading { text-align: center; padding: 40px; color: rgba(255,255,255,0.35); font-size: 0.9rem; }
+    .empty   { text-align:center; padding:46px 20px; color:rgba(255,255,255,0.26); }
+    .empty .ei { font-size:2.8rem; margin-bottom:10px; }
+    .loading { text-align:center; padding:38px; color:rgba(255,255,255,0.32); font-size:0.88rem; }
 
     /* Lightbox */
-    .lightbox {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.93); z-index: 9999;
-      align-items: center; justify-content: center;
-    }
-    .lightbox.open { display: flex; }
-    .lightbox img { max-width: 92vw; max-height: 88vh; border-radius: 10px; }
-    .lb-close {
-      position: absolute; top: 18px; right: 24px;
-      font-size: 2rem; color: #fff; cursor: pointer;
-      background: none; border: none; line-height: 1;
-    }
+    .lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.94); z-index:9999; align-items:center; justify-content:center; }
+    .lightbox.open { display:flex; }
+    .lightbox img { max-width:92vw; max-height:88vh; border-radius:10px; }
+    .lb-close { position:absolute; top:16px; right:22px; font-size:2rem; color:#fff; cursor:pointer; background:none; border:none; }
 
-    /* Access manager */
-    .access-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(114,137,218,0.14);
-      border-radius: 14px; padding: 20px 22px;
-      display: flex; flex-direction: column; gap: 14px;
-    }
-    .access-title { font-size: 0.9rem; font-weight: 800; color: #a0b4ff; }
-    .alist { display: flex; flex-direction: column; gap: 8px; }
-    .aitem {
-      display: flex; align-items: center; justify-content: space-between; gap: 10px;
-      background: rgba(255,255,255,0.04); border-radius: 8px; padding: 10px 14px;
-    }
-    .aitem-info { display: flex; flex-direction: column; gap: 2px; }
-    .aitem-name { font-size: 0.88rem; font-weight: 700; color: #e0e4ff; }
-    .aitem-role { font-size: 0.7rem; color: rgba(255,255,255,0.32); text-transform: uppercase; }
-    .abtn-remove {
-      background: rgba(231,76,60,0.14); color: #ff8888;
-      border: 1px solid rgba(231,76,60,0.24);
-      font-size: 0.73rem; font-weight: 700; padding: 5px 12px;
-      border-radius: 6px; cursor: pointer;
-    }
-    .add-row { display: flex; gap: 8px; flex-wrap: wrap; }
-    .add-row input {
-      flex: 1; min-width: 140px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(114,137,218,0.28);
-      border-radius: 8px; color: #fff;
-      font-family: inherit; font-size: 0.86rem;
-      padding: 9px 12px; outline: none;
-    }
-    .add-row input:focus { border-color: #7289da; }
-    .abtn-add {
-      background: linear-gradient(135deg,#5865f2,#7289da); color: #fff;
-      font-size: 0.84rem; font-weight: 700; padding: 9px 18px;
-      border-radius: 8px; border: none; cursor: pointer; white-space: nowrap;
-    }
+    /* Access */
+    .access-card { background:rgba(255,255,255,0.03); border:1px solid rgba(114,137,218,0.13); border-radius:14px; padding:18px 20px; display:flex; flex-direction:column; gap:13px; }
+    .access-title { font-size:0.88rem; font-weight:800; color:#a0b4ff; }
+    .alist { display:flex; flex-direction:column; gap:7px; }
+    .aitem { display:flex; align-items:center; justify-content:space-between; gap:10px; background:rgba(255,255,255,0.04); border-radius:8px; padding:9px 13px; }
+    .aitem-info { display:flex; flex-direction:column; gap:2px; }
+    .aitem-name { font-size:0.86rem; font-weight:700; color:#e0e4ff; }
+    .aitem-role { font-size:0.68rem; color:rgba(255,255,255,0.3); text-transform:uppercase; }
+    .ab-rm { background:rgba(231,76,60,0.13); color:#ff8888; border:1px solid rgba(231,76,60,0.22); font-size:0.71rem; font-weight:700; padding:5px 11px; border-radius:6px; cursor:pointer; }
+    .add-row { display:flex; gap:8px; flex-wrap:wrap; }
+    .add-row input { flex:1; min-width:135px; background:rgba(255,255,255,0.06); border:1px solid rgba(114,137,218,0.26); border-radius:8px; color:#fff; font-family:inherit; font-size:0.84rem; padding:9px 12px; outline:none; }
+    .add-row input:focus { border-color:#7289da; }
+    .ab-add { background:linear-gradient(135deg,#5865f2,#7289da); color:#fff; font-size:0.82rem; font-weight:700; padding:9px 16px; border-radius:8px; border:none; cursor:pointer; white-space:nowrap; }
 
     /* Toast */
-    .toast {
-      position: fixed; bottom: 26px; left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: #2ecc71; color: #fff; font-weight: 700;
-      padding: 11px 24px; border-radius: 10px; font-size: 0.88rem;
-      z-index: 9998; transition: transform 0.4s;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4); white-space: nowrap;
-    }
-    .toast.error { background: #e74c3c; }
-    .toast.show  { transform: translateX(-50%) translateY(0); }
+    .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:#2ecc71; color:#fff; font-weight:700; padding:10px 22px; border-radius:10px; font-size:0.88rem; z-index:9998; transition:transform 0.4s; box-shadow:0 4px 20px rgba(0,0,0,0.4); white-space:nowrap; }
+    .toast.error { background:#e74c3c; }
+    .toast.show  { transform:translateX(-50%) translateY(0); }
 
-    footer {
-      position: relative; z-index: 1; width: 100%;
-      border-top: 1px solid rgba(255,255,255,0.07);
-      padding: 16px 20px 20px;
-      display: flex; flex-direction: column; align-items: center; gap: 10px;
-      background: rgba(0,0,0,0.45); backdrop-filter: blur(6px); margin-top: auto;
-    }
-    .footer-copy { font-size: 0.73rem; color: rgba(255,255,255,0.28); }
-    .btn-mathix {
-      background: linear-gradient(135deg,#1a1a2e,#16213e); color: #a0b4ff;
-      font-size: 0.8rem; font-weight: 600; padding: 8px 18px; border-radius: 8px;
-      text-decoration: none; border: 1px solid rgba(114,137,218,0.28);
-      transition: transform 0.18s, filter 0.18s;
-    }
-    .btn-mathix:hover { transform: translateY(-2px); filter: brightness(1.18); }
+    footer { position:relative; z-index:1; width:100%; border-top:1px solid rgba(255,255,255,0.07); padding:15px 20px 18px; display:flex; flex-direction:column; align-items:center; gap:9px; background:rgba(0,0,0,0.45); backdrop-filter:blur(6px); margin-top:auto; }
+    .footer-copy { font-size:0.71rem; color:rgba(255,255,255,0.28); }
+    .btn-mathix { background:linear-gradient(135deg,#1a1a2e,#16213e); color:#a0b4ff; font-size:0.78rem; font-weight:600; padding:8px 17px; border-radius:8px; text-decoration:none; border:1px solid rgba(114,137,218,0.26); transition:transform 0.18s,filter 0.18s; }
+    .btn-mathix:hover { transform:translateY(-2px); filter:brightness(1.18); }
   </style>
 </head>
 <body>
-
   <canvas id="stars-canvas"></canvas>
   <div class="toast" id="toast"></div>
 
   <!-- Lightbox -->
-  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-    <button class="lb-close">✕</button>
+  <div class="lightbox" id="lightbox" onclick="closeLB()">
+    <button class="lb-close" onclick="closeLB()">✕</button>
     <img id="lb-img" src="" alt="Preuve" onclick="event.stopPropagation()" />
   </div>
 
@@ -330,348 +179,231 @@
       <img src="logo.png" alt="Logo" class="login-logo" />
       <div class="login-title">Accès Admin</div>
       <div class="login-sub">Brigade Anti Pédo</div>
-      <div class="lfield">
-        <label>Nom d'utilisateur</label>
-        <input type="text" id="login-user" placeholder="Identifiant" autocomplete="off" />
-      </div>
-      <div class="lfield">
-        <label>Mot de passe</label>
-        <input type="password" id="login-pass" placeholder="••••••••"
-               onkeydown="if(event.key==='Enter') doLogin()" />
-      </div>
-      <p class="login-error" id="login-error">❌ Identifiant ou mot de passe incorrect.</p>
+      <div class="lf"><label>Nom d'utilisateur</label><input type="text" id="lu" placeholder="Identifiant" autocomplete="off" /></div>
+      <div class="lf"><label>Mot de passe</label><input type="password" id="lp" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" /></div>
+      <p class="login-err" id="lerr">❌ Identifiant ou mot de passe incorrect.</p>
       <button class="login-btn" onclick="doLogin()">🔐 Se connecter</button>
     </div>
   </div>
 
   <!-- ══ PANEL ══ -->
-  <div id="admin-panel">
-
+  <div id="panel">
     <header>
-      <div class="h-left">
-        <img src="logo.png" alt="Logo" class="h-logo" />
-        <span class="h-title">Panel Admin</span>
+      <div class="hl">
+        <img src="logo.png" alt="Logo" class="hl-logo" />
+        <span class="hl-title">Panel Admin</span>
       </div>
-      <div class="h-right">
-        <span id="logged-as" style="font-size:0.75rem;color:rgba(255,255,255,0.35);"></span>
-        <a href="index.html" class="hbtn hbtn-home">🏠 Accueil</a>
-        <button class="hbtn hbtn-refresh" onclick="loadReports()">🔄 Actualiser</button>
-        <button class="hbtn hbtn-clear"   onclick="clearAll()">🗑️ Tout effacer</button>
-        <button class="hbtn hbtn-logout"  onclick="logout()">🚪 Déconnexion</button>
+      <div class="hr">
+        <span id="who" style="font-size:0.73rem;color:rgba(255,255,255,0.32);"></span>
+        <a href="index.html" class="hb hb-home">🏠 Accueil</a>
+        <button class="hb hb-refresh" onclick="load()">🔄 Actualiser</button>
+        <button class="hb hb-clear"   onclick="clearAll()">🗑️ Tout effacer</button>
+        <button class="hb hb-logout"  onclick="logout()">🚪 Déconnexion</button>
       </div>
     </header>
 
     <main>
-
       <!-- Stats -->
       <div class="stats">
-        <div class="stat">
-          <div class="stat-lbl">Total</div>
-          <div class="stat-val" id="s-total" style="color:#a0b4ff;">—</div>
-        </div>
-        <div class="stat">
-          <div class="stat-lbl">En attente</div>
-          <div class="stat-val" id="s-pending" style="color:#ff8888;">—</div>
-        </div>
-        <div class="stat">
-          <div class="stat-lbl">Résolus</div>
-          <div class="stat-val" id="s-resolved" style="color:#6ee89f;">—</div>
-        </div>
+        <div class="stat"><div class="stat-l">Total</div><div class="stat-v" id="st-tot" style="color:#a0b4ff;">—</div></div>
+        <div class="stat"><div class="stat-l">En attente</div><div class="stat-v" id="st-pend" style="color:#ff8888;">—</div></div>
+        <div class="stat"><div class="stat-l">Résolus</div><div class="stat-v" id="st-res" style="color:#6ee89f;">—</div></div>
       </div>
 
       <!-- Reports -->
-      <div class="stitle">⛔ Reports reçus <span class="badge" id="badge">0</span></div>
+      <div class="stitle">⛔ Reports reçus <span class="badge" id="bdg">0</span></div>
       <div class="filters">
-        <button class="fbtn active" onclick="setFilter('all',this)">Tous</button>
-        <button class="fbtn" onclick="setFilter('new',this)">En attente</button>
-        <button class="fbtn" onclick="setFilter('resolved',this)">Résolus</button>
+        <button class="fb on" onclick="setF('all',this)">Tous</button>
+        <button class="fb"    onclick="setF('new',this)">En attente</button>
+        <button class="fb"    onclick="setF('done',this)">Résolus</button>
       </div>
-      <div class="rlist" id="rlist">
-        <div class="loading">⏳ Chargement des reports...</div>
-      </div>
+      <div class="rlist" id="rlist"><div class="loading">⏳ Chargement...</div></div>
 
       <!-- Access -->
-      <div class="stitle" style="margin-top:6px;">👥 Gestion des accès</div>
+      <div class="stitle" style="margin-top:4px;">👥 Gestion des accès</div>
       <div class="access-card">
         <div class="access-title">Comptes autorisés</div>
         <div class="alist" id="alist"></div>
         <div class="add-row">
-          <input type="text"     id="new-user" placeholder="Nom d'utilisateur" autocomplete="off" />
-          <input type="password" id="new-pass" placeholder="Mot de passe" />
-          <button class="abtn-add" onclick="addUser()">➕ Ajouter</button>
+          <input type="text"     id="nu" placeholder="Nom d'utilisateur" autocomplete="off" />
+          <input type="password" id="np" placeholder="Mot de passe" />
+          <button class="ab-add" onclick="addUser()">➕ Ajouter</button>
         </div>
       </div>
-
     </main>
 
     <footer>
       <p class="footer-copy">© 2026 MathiX Games Corporation - Tous droits réservés</p>
-      <a href="https://mathix224.github.io/MathiX-Games-Corporation/index.html"
-         target="_blank" rel="noopener" class="btn-mathix">MathiX Games Corporation</a>
+      <a href="https://mathix224.github.io/MathiX-Games-Corporation/index.html" target="_blank" rel="noopener" class="btn-mathix">MathiX Games Corporation</a>
     </footer>
-
-  </div><!-- end admin-panel -->
+  </div>
 
   <script>
-    // ════════════════════════════════
-    //  CONFIG
-    // ════════════════════════════════
+    // ══ CONFIGURATION ══
     const BIN_ID  = '6a2db720f5f4af5e29ed1947';
-    const API_KEY = '$2a$10$x5Jn9LVnsCslVI81a8CHr.CvzzrxWXr83waavP/YxfRxmLkHVJPtW'; // ← colle ta X-Master-Key ici
+    const API_KEY = '$2a$10$mSH7beQoI9sAGU8Vy4CW6ewo48q4s27aFwDYBYJBC0W4ZaNSD7NjO';
 
-    // ── Stars ──
-    const canvas = document.getElementById('stars-canvas');
-    const ctx    = canvas.getContext('2d');
-    let stars    = [];
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    function initStars() {
-      stars = [];
-      for (let i = 0; i < 220; i++)
-        stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height,
-                     r: Math.random()*1.8+0.3, speed: Math.random()*6+0.5, alpha: Math.random()*0.6+0.4 });
-    }
-    function drawStars() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      for (const s of stars) {
-        s.y += s.speed;
-        if (s.y > canvas.height) { s.y = 0; s.x = Math.random()*canvas.width; }
-        ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-        ctx.fillStyle = `rgba(255,255,255,${s.alpha})`; ctx.fill();
-      }
-      requestAnimationFrame(drawStars);
-    }
-    window.addEventListener('resize', () => { resize(); initStars(); });
-    resize(); initStars(); drawStars();
+    // Stars
+    const cv=document.getElementById('stars-canvas'),cx=cv.getContext('2d');let st=[];
+    function rsz(){cv.width=innerWidth;cv.height=innerHeight;}
+    function ist(){st=[];for(let i=0;i<220;i++)st.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*1.8+0.3,s:Math.random()*6+0.5,a:Math.random()*0.6+0.4});}
+    function dst(){cx.clearRect(0,0,cv.width,cv.height);for(const s of st){s.y+=s.s;if(s.y>cv.height){s.y=0;s.x=Math.random()*cv.width;}cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);cx.fillStyle=`rgba(255,255,255,${s.a})`;cx.fill();}requestAnimationFrame(dst);}
+    window.addEventListener('resize',()=>{rsz();ist();});rsz();ist();dst();
 
-    // ── Auth ──
-    let currentUser = null;
-    function getUsers() {
-      const raw = localStorage.getItem('misaki_users');
-      if (raw) return JSON.parse(raw);
-      const def = [{ username: 'admin', password: 'misaki2026', role: 'Super Admin' }];
-      localStorage.setItem('misaki_users', JSON.stringify(def));
-      return def;
+    // Auth
+    let me=null;
+    function getUsers(){const r=localStorage.getItem('msk_users');if(r)return JSON.parse(r);const d=[{username:'admin',password:'misaki2026',role:'Super Admin'}];localStorage.setItem('msk_users',JSON.stringify(d));return d;}
+    function saveUsers(u){localStorage.setItem('msk_users',JSON.stringify(u));}
+    function doLogin(){
+      const u=document.getElementById('lu').value.trim();
+      const p=document.getElementById('lp').value;
+      const m=getUsers().find(x=>x.username===u&&x.password===p);
+      if(!m){document.getElementById('lerr').style.display='block';return;}
+      me=m;sessionStorage.setItem('msk_sess',JSON.stringify(m));openPanel();
     }
-    function saveUsers(u) { localStorage.setItem('misaki_users', JSON.stringify(u)); }
+    function logout(){sessionStorage.removeItem('msk_sess');me=null;document.getElementById('panel').style.display='none';document.getElementById('login-screen').style.display='flex';}
+    function openPanel(){document.getElementById('login-screen').style.display='none';document.getElementById('panel').style.display='flex';document.getElementById('who').textContent='👤 '+me.username;load();renderUsers();}
+    window.addEventListener('DOMContentLoaded',()=>{const s=sessionStorage.getItem('msk_sess');if(s){me=JSON.parse(s);openPanel();}});
 
-    function doLogin() {
-      const u = document.getElementById('login-user').value.trim();
-      const p = document.getElementById('login-pass').value;
-      const match = getUsers().find(x => x.username === u && x.password === p);
-      if (!match) { document.getElementById('login-error').style.display = 'block'; return; }
-      currentUser = match;
-      sessionStorage.setItem('misaki_sess', JSON.stringify(match));
-      openPanel();
+    // JSONBin
+    let reports=[];
+    async function load(){
+      document.getElementById('rlist').innerHTML='<div class="loading">⏳ Chargement des reports...</div>';
+      try{
+        const r=await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`,{headers:{'X-Master-Key':API_KEY}});
+        const d=await r.json();
+        reports=(Array.isArray(d.record)?d.record:[]).filter(x=>!x.init);
+        render();
+      }catch(e){document.getElementById('rlist').innerHTML='<div class="empty"><div class="ei">❌</div>Erreur de chargement. Vérifie la clé API dans le fichier.</div>';}
     }
-    function logout() {
-      sessionStorage.removeItem('misaki_sess'); currentUser = null;
-      document.getElementById('admin-panel').style.display = 'none';
-      document.getElementById('login-screen').style.display = 'flex';
-    }
-    function openPanel() {
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('admin-panel').style.display  = 'flex';
-      document.getElementById('logged-as').textContent = '👤 ' + currentUser.username;
-      loadReports(); renderUsers();
-    }
-    window.addEventListener('DOMContentLoaded', () => {
-      const s = sessionStorage.getItem('misaki_sess');
-      if (s) { currentUser = JSON.parse(s); openPanel(); }
-    });
-
-    // ── JSONBin ──
-    let allReports = [];
-
-    async function loadReports() {
-      document.getElementById('rlist').innerHTML = '<div class="loading">⏳ Chargement...</div>';
-      try {
-        const res  = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`,
-                                 { headers: { 'X-Master-Key': API_KEY } });
-        const data = await res.json();
-        allReports = (Array.isArray(data.record) ? data.record : []).filter(r => !r.init);
-        renderReports();
-      } catch(e) {
-        document.getElementById('rlist').innerHTML =
-          '<div class="empty"><div class="eicon">❌</div>Erreur de chargement. Vérifie la clé API.</div>';
-      }
+    async function save(){
+      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},body:JSON.stringify(reports)});
     }
 
-    async function saveBin() {
-      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-        method:  'PUT',
-        headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-        body:    JSON.stringify(allReports)
-      });
-    }
+    // Filter & Render
+    let filt='all';
+    function setF(f,btn){filt=f;document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');render();}
 
-    // ── Filter & Render ──
-    let filter = 'all';
-    function setFilter(f, btn) {
-      filter = f;
-      document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderReports();
-    }
+    function render(){
+      const pend=reports.filter(r=>r.status!=='done').length;
+      const res=reports.filter(r=>r.status==='done').length;
+      document.getElementById('st-tot').textContent=reports.length;
+      document.getElementById('st-pend').textContent=pend;
+      document.getElementById('st-res').textContent=res;
+      document.getElementById('bdg').textContent=pend;
 
-    function renderReports() {
-      const pending  = allReports.filter(r => r.status !== 'resolved').length;
-      const resolved = allReports.filter(r => r.status === 'resolved').length;
-      document.getElementById('s-total').textContent   = allReports.length;
-      document.getElementById('s-pending').textContent = pending;
-      document.getElementById('s-resolved').textContent= resolved;
-      document.getElementById('badge').textContent     = pending;
+      let list=reports;
+      if(filt==='new')  list=reports.filter(r=>r.status!=='done');
+      if(filt==='done') list=reports.filter(r=>r.status==='done');
 
-      let list = allReports;
-      if (filter === 'new')      list = allReports.filter(r => r.status !== 'resolved');
-      if (filter === 'resolved') list = allReports.filter(r => r.status === 'resolved');
+      const el=document.getElementById('rlist');
+      if(!list.length){el.innerHTML=`<div class="empty"><div class="ei">📭</div>Aucun report${filt!=='all'?' dans cette catégorie':''} pour le moment.</div>`;return;}
 
-      const el = document.getElementById('rlist');
-      if (!list.length) {
-        el.innerHTML = `<div class="empty"><div class="eicon">📭</div>
-          Aucun report${filter!=='all'?' dans cette catégorie':''} pour le moment.</div>`;
-        return;
-      }
+      el.innerHTML=list.slice().reverse().map(r=>{
+        const done=r.status==='done';
 
-      el.innerHTML = list.slice().reverse().map(r => {
-
-        // ── Proofs ──
-        let proofsHtml = '';
-        if (r.filesData && r.filesData.length) {
-          const items = r.filesData.map((f,i) => {
-            if (f.type && f.type.startsWith('image/')) {
-              return `<div class="proof-img-wrap" onclick="openLightbox('${f.data}')">
+        // ── PREUVES ──
+        let proofsHtml='';
+        if(r.files && r.files.length){
+          const items=r.files.map(f=>{
+            if(f.type.startsWith('image/')){
+              // Image → miniature cliquable + lightbox
+              return `<div class="pimg-wrap" onclick="openLB('${f.data}')">
                         <img src="${f.data}" alt="${f.name}" />
-                        <div class="zoom-icon">🔍</div>
+                        <div class="zoom">🔍</div>
                       </div>`;
-            } else if (f.type && f.type.startsWith('video/')) {
-              return `<div class="proof-file"><span>🎥</span><span>${f.name}</span></div>`;
+            } else if(f.type.startsWith('video/')){
+              // Vidéo → lecteur natif
+              return `<div class="pvid-wrap">
+                        <div class="pvid-lbl">🎥 ${f.name}</div>
+                        <video controls preload="metadata">
+                          <source src="${f.data}" type="${f.type}" />
+                          Ton navigateur ne supporte pas la lecture vidéo.
+                        </video>
+                      </div>`;
             } else {
-              return `<div class="proof-file"><span>🎙️</span><span>${f.name}</span></div>`;
+              // Audio → lecteur audio
+              return `<div class="paud-wrap">
+                        <div class="paud-lbl">🎙️ ${f.name}</div>
+                        <audio controls>
+                          <source src="${f.data}" type="${f.type}" />
+                        </audio>
+                      </div>`;
             }
           }).join('');
-          proofsHtml = `
-            <div class="rproofs-box">
-              <div class="rproofs-lbl">📎 Preuves (${r.filesData.length} fichier${r.filesData.length>1?'s':''})</div>
-              <div class="rproofs-grid">${items}</div>
-            </div>`;
+          proofsHtml=`<div class="proofs-box"><div class="proofs-lbl">📎 Preuves (${r.files.length} fichier${r.files.length>1?'s':''})</div><div class="proofs-grid">${items}</div></div>`;
         }
 
-        // ── Details ──
-        const detailsHtml = r.details ? `
-          <div class="rdetails-box">
-            <div class="rdetails-lbl">📝 Détails supplémentaires</div>
-            <div class="rdetails">${r.details.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
-          </div>` : '';
+        // ── DÉTAILS ──
+        const detHtml=r.details?`<div class="details-box"><div class="details-lbl">📝 Détails supplémentaires</div><div class="details-txt">${r.details.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div></div>`:'';
 
-        const isResolved = r.status === 'resolved';
         return `
-        <div class="rcard ${isResolved?'resolved':''}" id="rc-${r.id}">
-          <div class="rcard-top">
-            <div class="rcard-meta">
-              <div class="rcard-id">Report #${r.id}</div>
-              <div class="rcard-date">📅 ${r.date}</div>
+        <div class="rcard${done?' done':''}" id="rc-${r.id}">
+          <div class="rc-head">
+            <div class="rc-meta">
+              <div class="rc-id">Report #${r.id}</div>
+              <div class="rc-date">📅 ${r.date}</div>
             </div>
-            <span class="sbadge ${isResolved?'s-resolved':'s-new'}">
-              ${isResolved ? '✅ Résolu' : '🔴 En attente'}
-            </span>
+            <span class="sbadge ${done?'s-done':'s-new'}">${done?'✅ Résolu':'🔴 En attente'}</span>
           </div>
-          <div class="rcard-body">
+          <div class="rc-body">
             <div class="rfields">
-              <div class="rfield">
-                <div class="rfield-lbl">@ Suspect</div>
-                <div class="rfield-val">${r.suspectTag || '—'}</div>
-              </div>
-              <div class="rfield">
-                <div class="rfield-lbl">ID Discord</div>
-                <div class="rfield-val">${r.suspectId || '—'}</div>
-              </div>
-              <div class="rfield">
-                <div class="rfield-lbl">Reporté par</div>
-                <div class="rfield-val">${r.reporter || '—'}</div>
-              </div>
+              <div class="rf"><div class="rf-l">@ Suspect</div><div class="rf-v">${r.suspectTag||'—'}</div></div>
+              <div class="rf"><div class="rf-l">ID Discord</div><div class="rf-v">${r.suspectId||'—'}</div></div>
+              <div class="rf"><div class="rf-l">Reporté par</div><div class="rf-v">${r.reporter||'—'}</div></div>
             </div>
-
-            <div class="rreason">❗ ${r.reason || 'Non précisé'}</div>
-
-            ${detailsHtml}
+            <div class="reason-box">❗ ${r.reason||'Non précisé'}</div>
+            ${detHtml}
             ${proofsHtml}
-
-            <div class="ractions">
-              ${!isResolved
-                ? `<button class="abtn abtn-resolve" onclick="resolveR('${r.id}')">✅ Marquer résolu</button>`
-                : `<button class="abtn abtn-resolve" onclick="unresolveR('${r.id}')">🔄 Rouvrir</button>`}
-              <button class="abtn abtn-delete" onclick="deleteR('${r.id}')">🗑️ Supprimer</button>
+            <div class="actions">
+              ${!done
+                ?`<button class="ab ab-ok"  onclick="resolve('${r.id}')">✅ Marquer résolu</button>`
+                :`<button class="ab ab-ok"  onclick="unresolve('${r.id}')">🔄 Rouvrir</button>`}
+              <button class="ab ab-del" onclick="del('${r.id}')">🗑️ Supprimer</button>
             </div>
           </div>
         </div>`;
       }).join('');
     }
 
-    async function resolveR(id) {
-      const r = allReports.find(x => x.id===id);
-      if (r) { r.status='resolved'; await saveBin(); renderReports(); showToast('✅ Marqué comme résolu !'); }
-    }
-    async function unresolveR(id) {
-      const r = allReports.find(x => x.id===id);
-      if (r) { r.status='new'; await saveBin(); renderReports(); showToast('🔄 Report rouvert.'); }
-    }
-    async function deleteR(id) {
-      if (!confirm('Supprimer ce report définitivement ?')) return;
-      allReports = allReports.filter(x => x.id!==id);
-      await saveBin(); renderReports(); showToast('🗑️ Report supprimé.');
-    }
-    async function clearAll() {
-      if (!confirm('Supprimer TOUS les reports ? Cette action est irréversible.')) return;
-      allReports = []; await saveBin(); renderReports(); showToast('🗑️ Tous les reports effacés.');
-    }
+    async function resolve(id){const r=reports.find(x=>x.id===id);if(r){r.status='done';await save();render();toast('✅ Marqué comme résolu !');}};
+    async function unresolve(id){const r=reports.find(x=>x.id===id);if(r){r.status='new';await save();render();toast('🔄 Report rouvert.');}};
+    async function del(id){if(!confirm('Supprimer ce report définitivement ?'))return;reports=reports.filter(x=>x.id!==id);await save();render();toast('🗑️ Report supprimé.');}
+    async function clearAll(){if(!confirm('Supprimer TOUS les reports ? Irréversible.'))return;reports=[];await save();render();toast('🗑️ Tout effacé.');}
 
-    // ── Lightbox ──
-    function openLightbox(src) {
-      document.getElementById('lb-img').src = src;
-      document.getElementById('lightbox').classList.add('open');
-    }
-    function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+    // Lightbox
+    function openLB(src){document.getElementById('lb-img').src=src;document.getElementById('lightbox').classList.add('open');}
+    function closeLB(){document.getElementById('lightbox').classList.remove('open');}
 
-    // ── Users ──
-    function renderUsers() {
-      const users = getUsers();
-      document.getElementById('alist').innerHTML = users.map((u,i) => `
+    // Users
+    function renderUsers(){
+      const users=getUsers();
+      document.getElementById('alist').innerHTML=users.map((u,i)=>`
         <div class="aitem">
-          <div class="aitem-info">
-            <div class="aitem-name">👤 ${u.username}</div>
-            <div class="aitem-role">${u.role || 'Modérateur'}</div>
-          </div>
-          ${u.username !== currentUser.username
-            ? `<button class="abtn-remove" onclick="removeUser(${i})">Retirer l'accès</button>`
-            : `<span style="font-size:0.7rem;color:rgba(255,255,255,0.22);">Vous</span>`}
+          <div class="aitem-info"><div class="aitem-name">👤 ${u.username}</div><div class="aitem-role">${u.role||'Modérateur'}</div></div>
+          ${u.username!==me.username?`<button class="ab-rm" onclick="removeUser(${i})">Retirer l'accès</button>`:`<span style="font-size:0.68rem;color:rgba(255,255,255,0.2);">Vous</span>`}
         </div>`).join('');
     }
-    function addUser() {
-      const u = document.getElementById('new-user').value.trim();
-      const p = document.getElementById('new-pass').value.trim();
-      if (!u || !p) { showToast('Remplis les deux champs !', true); return; }
-      const users = getUsers();
-      if (users.find(x => x.username===u)) { showToast('Cet utilisateur existe déjà !', true); return; }
-      users.push({ username: u, password: p, role: 'Modérateur' });
+    function addUser(){
+      const u=document.getElementById('nu').value.trim();
+      const p=document.getElementById('np').value.trim();
+      if(!u||!p){toast('Remplis les deux champs !',true);return;}
+      const users=getUsers();
+      if(users.find(x=>x.username===u)){toast('Cet utilisateur existe déjà !',true);return;}
+      users.push({username:u,password:p,role:'Modérateur'});
       saveUsers(users);
-      document.getElementById('new-user').value = '';
-      document.getElementById('new-pass').value = '';
-      renderUsers(); showToast('✅ Accès ajouté pour ' + u + ' !');
+      document.getElementById('nu').value='';document.getElementById('np').value='';
+      renderUsers();toast('✅ Accès ajouté pour '+u+' !');
     }
-    function removeUser(i) {
-      const users = getUsers();
-      if (users[i].username === currentUser.username) { showToast('Impossible de vous retirer vous-même !', true); return; }
-      if (!confirm(`Retirer l'accès de "${users[i].username}" ?`)) return;
-      users.splice(i,1); saveUsers(users); renderUsers(); showToast('🚫 Accès retiré.');
+    function removeUser(i){
+      const users=getUsers();
+      if(users[i].username===me.username){toast('Impossible de vous retirer vous-même !',true);return;}
+      if(!confirm(`Retirer l'accès de "${users[i].username}" ?`))return;
+      users.splice(i,1);saveUsers(users);renderUsers();toast('🚫 Accès retiré.');
     }
 
-    // ── Toast ──
-    function showToast(msg, isError=false) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.className = 'toast' + (isError ? ' error' : '') + ' show';
-      setTimeout(() => { t.className = 'toast' + (isError ? ' error' : ''); }, 3200);
-    }
+    // Toast
+    function toast(m,err=false){const t=document.getElementById('toast');t.textContent=m;t.className='toast'+(err?' error':'')+' show';setTimeout(()=>{t.className='toast'+(err?' error':'');},3200);}
   </script>
 </body>
 </html>
