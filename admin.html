@@ -114,6 +114,22 @@
     .add-row input:focus{border-color:#7289da;}
     .ab-add{background:linear-gradient(135deg,#5865f2,#7289da);color:#fff;font-size:.82rem;font-weight:700;padding:9px 16px;border-radius:8px;border:none;cursor:pointer;white-space:nowrap;}
 
+    /* ── Liste suspects ── */
+    .suspects-card{background:rgba(255,255,255,.03);border:1px solid rgba(231,76,60,.2);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:13px;}
+    .suspects-title{font-size:1.05rem;font-weight:900;color:#ff6b6b;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+    .suspects-title span{font-size:.72rem;font-weight:700;background:rgba(231,76,60,.2);color:#ff8888;border:1px solid rgba(231,76,60,.3);padding:2px 10px;border-radius:20px;}
+    .suspect-list{display:flex;flex-direction:column;gap:8px;}
+    .suspect-item{display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(231,76,60,.05);border:1px solid rgba(231,76,60,.15);border-radius:10px;padding:11px 15px;transition:border-color .2s;}
+    .suspect-item:hover{border-color:rgba(231,76,60,.35);}
+    .suspect-item:nth-child(1){border-color:rgba(255,100,50,.4);background:rgba(255,80,30,.08);}
+    .suspect-left{display:flex;flex-direction:column;gap:3px;}
+    .suspect-tag{font-size:.92rem;font-weight:800;color:#ffcccc;}
+    .suspect-id{font-size:.68rem;color:rgba(255,255,255,.3);font-family:monospace;}
+    .suspect-count{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+    .count-badge{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;font-size:.82rem;font-weight:900;padding:5px 13px;border-radius:20px;white-space:nowrap;}
+    .count-label{font-size:.68rem;color:rgba(255,255,255,.3);}
+    .suspects-empty{text-align:center;padding:24px;color:rgba(255,255,255,.26);font-size:.84rem;}
+
     .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#2ecc71;color:#fff;font-weight:700;padding:10px 22px;border-radius:10px;font-size:.88rem;z-index:9998;transition:transform .4s;box-shadow:0 4px 20px rgba(0,0,0,.4);white-space:nowrap;}
     .toast.error{background:#e74c3c;}
     .toast.show{transform:translateX(-50%) translateY(0);}
@@ -177,6 +193,12 @@
       </div>
       <div class="rlist" id="rlist"><div class="loading">⏳ Chargement...</div></div>
 
+      <div class="stitle" style="margin-top:4px;">🚨 Liste des potentiels pédophiles</div>
+      <div class="suspects-card">
+        <div class="suspects-title">⚠️ LISTE DES POTENTIELS PÉDOPHILES <span id="suspects-count">0</span></div>
+        <div class="suspect-list" id="suspect-list"><div class="suspects-empty">Aucun suspect pour le moment.</div></div>
+      </div>
+
       <div class="stitle" style="margin-top:4px;">👥 Gestion des accès</div>
       <div class="access-card">
         <div class="access-title">Comptes autorisés</div>
@@ -195,8 +217,8 @@
   </div>
 
   <script>
-    const BIN_ID  = '6a2fe4b1f5f4af5e29f4be76';
-    const API_KEY = '$2a$10$hWHiijv8F8n7mOz8OoZhuerFpM8aBOv9G0.bOa96iShozeI4f7MIW';
+    const BIN_ID  = '6a2e8074f5f4af5e29ef92ea';
+    const API_KEY = '$2a$10$mSH7beQoI9sAGU8Vy4CW6ewo48q4s27aFwDYBYJBC0W4ZaNSD7NjO';
 
     // ── Stars ─────────────────────────────────────────────────────────────────
     const cv=document.getElementById('stars-canvas'),cx=cv.getContext('2d');let st=[];
@@ -342,6 +364,7 @@
         return;
       }
 
+      renderSuspects();
       el.innerHTML = list.slice().reverse().map(r => {
         const done = r.status === 'done';
 
@@ -402,7 +425,34 @@
       }).join('');
     }
 
-    async function resolveR(id) {
+    function renderSuspects() {
+      // Regrouper les reports par suspectId
+      const map = {};
+      for (const r of reports) {
+        const key = r.suspectId || 'inconnu';
+        if (!map[key]) map[key] = { id: key, tag: r.suspectTag || '—', count: 0 };
+        map[key].count++;
+        // Garder le @ le plus récent
+        if (r.suspectTag) map[key].tag = r.suspectTag;
+      }
+      const suspects = Object.values(map).sort((a, b) => b.count - a.count);
+      const el = document.getElementById('suspect-list');
+      document.getElementById('suspects-count').textContent = suspects.length;
+      if (!suspects.length) {
+        el.innerHTML = '<div class="suspects-empty">Aucun suspect pour le moment.</div>';
+        return;
+      }
+      el.innerHTML = suspects.map((s, i) => `
+        <div class="suspect-item">
+          <div class="suspect-left">
+            <div class="suspect-tag">${s.tag}</div>
+            <div class="suspect-id">ID : ${s.id}</div>
+          </div>
+          <div class="suspect-count">
+            <div class="count-badge">🔴 ${s.count} report${s.count > 1 ? 's' : ''}</div>
+          </div>
+        </div>`).join('');
+    }
       try { const r = reports.find(x => x.id === id); if (r) { r.status = 'done'; await saveBin(); render(); toast('✅ Marqué comme résolu !'); } }
       catch(e) { toast('❌ ' + e.message, true); }
     }
