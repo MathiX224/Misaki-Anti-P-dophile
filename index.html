@@ -25,14 +25,12 @@
       position: relative;
     }
 
-    /* ── Star canvas ── */
     #stars-canvas {
       position: fixed;
       inset: 0;
       z-index: 0;
     }
 
-    /* ── Main content ── */
     .container {
       position: relative;
       z-index: 1;
@@ -45,7 +43,6 @@
       justify-content: center;
     }
 
-    /* ── Shaking logo ── */
     .logo-wrapper {
       display: flex;
       flex-direction: column;
@@ -73,7 +70,6 @@
       100% { transform: translate(0, 0) rotate(0deg); }
     }
 
-    /* ── Title ── */
     .site-title {
       font-size: clamp(1.6rem, 5vw, 2.6rem);
       font-weight: 900;
@@ -84,10 +80,8 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      text-shadow: none;
     }
 
-    /* ── Subtitle ── */
     .site-sub {
       font-size: 0.95rem;
       color: rgba(255,255,255,0.5);
@@ -96,7 +90,6 @@
       text-transform: uppercase;
     }
 
-    /* ── Server description ── */
     .server-desc {
       font-size: 1rem;
       color: rgba(255,255,255,0.75);
@@ -110,29 +103,38 @@
       font-weight: 700;
     }
 
-    /* ── Buttons group ── */
-    .buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    /* ── Grille 2x2 ── */
+    .buttons-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
       width: 100%;
-      max-width: 340px;
+      max-width: 480px;
+    }
+
+    /* ── Bouton admin centré sous la grille ── */
+    .buttons-bottom {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      justify-content: center;
     }
 
     .btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      padding: 15px 28px;
+      gap: 10px;
+      padding: 15px 18px;
       border-radius: 12px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 700;
       text-decoration: none;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
       transition: transform 0.18s, box-shadow 0.18s, filter 0.18s;
       cursor: pointer;
       border: none;
+      text-align: center;
     }
 
     .btn:hover {
@@ -144,14 +146,12 @@
       transform: translateY(0) scale(0.98);
     }
 
-    /* Discord – Anti PEDO */
     .btn-discord-anti {
       background: linear-gradient(135deg, #5865f2, #7289da);
       color: #fff;
       box-shadow: 0 4px 20px rgba(88, 101, 242, 0.45);
     }
 
-    /* Discord – Officiel */
     .btn-discord-official {
       background: linear-gradient(135deg, #23272a, #36393f);
       color: #fff;
@@ -161,27 +161,31 @@
 
     .btn-tuto {
       background: linear-gradient(135deg, #1a1a2e, #16213e);
-      color: #a0b4ff; border: 1px solid rgba(114,137,218,0.35);
-    }
-    .btn-report {
-      background: linear-gradient(135deg, #3a0a0a, #5c1010);
-      color: #ffaaaa; border: 1px solid rgba(231,76,60,0.4);
-      box-shadow: 0 4px 16px rgba(231,76,60,0.2);
-    }
-    .btn-admin {
-      background: linear-gradient(135deg, #0a0a1a, #1a1a3a);
-      color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.1);
-      font-size: 0.8rem;
+      color: #a0b4ff;
+      border: 1px solid rgba(114,137,218,0.35);
     }
 
-    /* Discord SVG icon */
+    .btn-report {
+      background: linear-gradient(135deg, #3a0a0a, #5c1010);
+      color: #ffaaaa;
+      border: 1px solid rgba(231,76,60,0.4);
+      box-shadow: 0 4px 16px rgba(231,76,60,0.2);
+    }
+
+    .btn-admin {
+      background: linear-gradient(135deg, #0a0a1a, #1a1a3a);
+      color: rgba(255,255,255,0.4);
+      border: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.82rem;
+      padding: 11px 32px;
+    }
+
     .discord-icon {
-      width: 26px;
-      height: 26px;
+      width: 22px;
+      height: 22px;
       flex-shrink: 0;
     }
 
-    /* ── Footer ── */
     footer {
       position: relative;
       z-index: 1;
@@ -220,11 +224,16 @@
       box-shadow: 0 4px 16px rgba(114, 137, 218, 0.35);
       filter: brightness(1.2);
     }
+
+    @media (max-width: 400px) {
+      .buttons-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Starfield -->
   <canvas id="stars-canvas"></canvas>
 
   <div class="container">
@@ -238,35 +247,37 @@
 
     <p class="server-desc" style="margin-top:-16px;">Il faut DM <span class="highlight">'1wou'</span> sur Discord pour rejoindre la brigade !</p>
 
-    <div class="buttons">
-      <!-- Button 1: Misaki Anti PEDO -->
+    <!-- Grille 2x2 : Discord gauche | Tuto+Report droite -->
+    <div class="buttons-grid">
+      <!-- Colonne gauche : serveurs Discord -->
       <a href="https://discord.gg/j6uK8UC2Jj" target="_blank" rel="noopener" class="btn btn-discord-anti">
-        <svg class="discord-icon" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <svg class="discord-icon" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M60.105 4.898A58.55 58.55 0 0 0 45.653.415a.22.22 0 0 0-.233.11 40.784 40.784 0 0 0-1.8 3.697c-5.456-.817-10.886-.817-16.23 0-.485-1.164-1.201-2.587-1.823-3.697a.228.228 0 0 0-.233-.11 58.386 58.386 0 0 0-14.451 4.483.207.207 0 0 0-.095.082C1.578 18.73-.944 32.144.293 45.39a.244.244 0 0 0 .093.167c6.073 4.46 11.956 7.167 17.729 8.962a.23.23 0 0 0 .249-.082 42.08 42.08 0 0 0 3.627-5.9.225.225 0 0 0-.123-.312 38.772 38.772 0 0 1-5.539-2.64.228.228 0 0 1-.022-.378c.372-.279.744-.569 1.1-.862a.22.22 0 0 1 .23-.031c11.621 5.305 24.198 5.305 35.681 0a.219.219 0 0 1 .232.028c.356.293.728.586 1.103.865a.228.228 0 0 1-.02.378 36.384 36.384 0 0 1-5.54 2.637.227.227 0 0 0-.121.315 47.249 47.249 0 0 0 3.624 5.897.225.225 0 0 0 .249.084c5.799-1.795 11.683-4.502 17.756-8.962a.228.228 0 0 0 .092-.164c1.48-15.315-2.48-28.618-10.497-40.412a.18.18 0 0 0-.093-.084ZM23.725 37.322c-3.498 0-6.38-3.212-6.38-7.156 0-3.944 2.826-7.156 6.38-7.156 3.582 0 6.437 3.24 6.38 7.156 0 3.944-2.826 7.156-6.38 7.156Zm23.593 0c-3.498 0-6.38-3.212-6.38-7.156 0-3.944 2.826-7.156 6.38-7.156 3.582 0 6.437 3.24 6.38 7.156 0 3.944-2.798 7.156-6.38 7.156Z" fill="#ffffff"/>
         </svg>
         Misaki Anti PEDO
       </a>
 
-      <!-- Button 2: Misaki Officiel -->
+      <!-- Colonne droite : Tutoriel -->
+      <a href="tutoriel.html" class="btn btn-tuto">📖 Tutoriel Brigade</a>
+
+      <!-- Colonne gauche : Misaki Officiel -->
       <a href="https://discord.gg/MR2x7AE6C2" target="_blank" rel="noopener" class="btn btn-discord-official">
-        <svg class="discord-icon" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <svg class="discord-icon" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M60.105 4.898A58.55 58.55 0 0 0 45.653.415a.22.22 0 0 0-.233.11 40.784 40.784 0 0 0-1.8 3.697c-5.456-.817-10.886-.817-16.23 0-.485-1.164-1.201-2.587-1.823-3.697a.228.228 0 0 0-.233-.11 58.386 58.386 0 0 0-14.451 4.483.207.207 0 0 0-.095.082C1.578 18.73-.944 32.144.293 45.39a.244.244 0 0 0 .093.167c6.073 4.46 11.956 7.167 17.729 8.962a.23.23 0 0 0 .249-.082 42.08 42.08 0 0 0 3.627-5.9.225.225 0 0 0-.123-.312 38.772 38.772 0 0 1-5.539-2.64.228.228 0 0 1-.022-.378c.372-.279.744-.569 1.1-.862a.22.22 0 0 1 .23-.031c11.621 5.305 24.198 5.305 35.681 0a.219.219 0 0 1 .232.028c.356.293.728.586 1.103.865a.228.228 0 0 1-.02.378 36.384 36.384 0 0 1-5.54 2.637.227.227 0 0 0-.121.315 47.249 47.249 0 0 0 3.624 5.897.225.225 0 0 0 .249.084c5.799-1.795 11.683-4.502 17.756-8.962a.228.228 0 0 0 .092-.164c1.48-15.315-2.48-28.618-10.497-40.412a.18.18 0 0 0-.093-.084ZM23.725 37.322c-3.498 0-6.38-3.212-6.38-7.156 0-3.944 2.826-7.156 6.38-7.156 3.582 0 6.437 3.24 6.38 7.156 0 3.944-2.826 7.156-6.38 7.156Zm23.593 0c-3.498 0-6.38-3.212-6.38-7.156 0-3.944 2.826-7.156 6.38-7.156 3.582 0 6.437 3.24 6.38 7.156 0 3.944-2.798 7.156-6.38 7.156Z" fill="#5865f2"/>
         </svg>
         Misaki Officiel
       </a>
 
-      <!-- Button 3: Tutoriel -->
-      <a href="tutoriel.html" class="btn btn-tuto">📖 Voir le tutoriel Brigade</a>
-
-      <!-- Button 4: Report -->
+      <!-- Colonne droite : Report -->
       <a href="report.html" class="btn btn-report">⛔ Signaler un suspect</a>
+    </div>
 
-      <!-- Button 5: Admin -->
+    <!-- Panel admin centré sous la grille -->
+    <div class="buttons-bottom">
       <a href="admin.html" class="btn btn-admin">🔐 Panel Admin</a>
     </div>
   </div>
 
-  <!-- Footer -->
   <footer>
     <p class="footer-copyright">© 2026 MathiX Games Corporation - Tous droits réservés</p>
     <a href="https://mathix224.github.io/MathiX-Games-Corporation/index.html" target="_blank" rel="noopener" class="btn-mathix">
@@ -274,13 +285,10 @@
     </a>
   </footer>
 
-  <!-- Stars script -->
   <script>
     const canvas = document.getElementById('stars-canvas');
     const ctx = canvas.getContext('2d');
-
     let stars = [];
-    const STAR_COUNT = 220;
 
     function resize() {
       canvas.width  = window.innerWidth;
@@ -289,12 +297,11 @@
 
     function initStars() {
       stars = [];
-      for (let i = 0; i < STAR_COUNT; i++) {
+      for (let i = 0; i < 220; i++) {
         stars.push({
-          x:    Math.random() * canvas.width,
-          y:    Math.random() * canvas.height,
-          r:    Math.random() * 1.8 + 0.3,
-          // speed range: mix of slow, medium and very fast stars
+          x:     Math.random() * canvas.width,
+          y:     Math.random() * canvas.height,
+          r:     Math.random() * 1.8 + 0.3,
           speed: Math.random() * 6 + 0.5,
           alpha: Math.random() * 0.6 + 0.4,
         });
@@ -303,32 +310,19 @@
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       for (const s of stars) {
-        // Move downward (falling-star feel)
         s.y += s.speed;
-        if (s.y > canvas.height) {
-          s.y = 0;
-          s.x = Math.random() * canvas.width;
-        }
-
+        if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
         ctx.fill();
       }
-
       requestAnimationFrame(draw);
     }
 
-    window.addEventListener('resize', () => {
-      resize();
-      initStars();
-    });
-
-    resize();
-    initStars();
-    draw();
+    window.addEventListener('resize', () => { resize(); initStars(); });
+    resize(); initStars(); draw();
   </script>
 
 </body>
