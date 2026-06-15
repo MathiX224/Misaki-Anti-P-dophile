@@ -11,7 +11,7 @@
     #stars-canvas{position:fixed;inset:0;z-index:0;}
     @keyframes shake{0%,100%{transform:translate(0,0) rotate(0deg);}15%{transform:translate(-3px,2px) rotate(-1deg);}30%{transform:translate(3px,-2px) rotate(1deg);}45%{transform:translate(-2px,3px) rotate(-.5deg);}60%{transform:translate(2px,-3px) rotate(.5deg);}75%{transform:translate(-3px,-1px) rotate(-1deg);}90%{transform:translate(3px,1px) rotate(1deg);}}
 
-    /* LOGIN */
+    /* ── LOGIN ── */
     #login-screen{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;width:100%;padding:20px;}
     .login-box{background:rgba(255,255,255,.04);border:1px solid rgba(114,137,218,.25);border-radius:18px;padding:34px 28px;width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center;gap:18px;backdrop-filter:blur(8px);}
     .login-logo{width:80px;height:80px;border-radius:50%;object-fit:cover;box-shadow:0 0 26px rgba(114,137,218,.5);animation:shake .35s infinite;}
@@ -24,9 +24,9 @@
     .lf input::placeholder{color:rgba(255,255,255,.26);}
     .login-btn{background:linear-gradient(135deg,#5865f2,#7289da);color:#fff;font-size:.94rem;font-weight:800;padding:13px;border-radius:10px;border:none;cursor:pointer;width:100%;transition:filter .18s,transform .18s;}
     .login-btn:hover{filter:brightness(1.14);transform:translateY(-2px);}
-    .login-err{font-size:.82rem;color:#ff6b6b;text-align:center;display:none;}
+    .login-err{font-size:.82rem;color:#ff6b6b;text-align:center;display:none;background:rgba(231,76,60,.1);border:1px solid rgba(231,76,60,.2);border-radius:8px;padding:8px 12px;width:100%;}
 
-    /* PANEL */
+    /* ── PANEL ── */
     #panel{display:none;flex-direction:column;align-items:center;width:100%;}
     header{position:relative;z-index:1;width:100%;display:flex;align-items:center;justify-content:space-between;padding:20px 24px 12px;flex-wrap:wrap;gap:10px;}
     .hl{display:flex;align-items:center;gap:10px;}
@@ -61,7 +61,6 @@
     .rcard:hover{border-color:rgba(231,76,60,.48);}
     .rcard.done{border-color:rgba(46,204,113,.2);opacity:.72;}
     .rcard.done:hover{border-color:rgba(46,204,113,.44);}
-
     .rc-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.06);flex-wrap:wrap;gap:8px;}
     .rc-meta{display:flex;flex-direction:column;gap:2px;}
     .rc-id{font-size:.68rem;color:rgba(255,255,255,.26);font-family:monospace;}
@@ -69,49 +68,28 @@
     .sbadge{font-size:.66rem;font-weight:800;padding:4px 12px;border-radius:20px;white-space:nowrap;}
     .s-new{background:rgba(231,76,60,.17);color:#ff8888;border:1px solid rgba(231,76,60,.26);}
     .s-done{background:rgba(46,204,113,.13);color:#6ee89f;border:1px solid rgba(46,204,113,.26);}
-
     .rc-body{padding:14px 16px;display:flex;flex-direction:column;gap:12px;}
     .rfields{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;}
     .rf{display:flex;flex-direction:column;gap:3px;}
     .rf-l{font-size:.66rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.5px;}
     .rf-v{font-size:.86rem;color:#e0e4ff;word-break:break-all;}
-
     .reason-box{background:rgba(231,76,60,.07);border:1px solid rgba(231,76,60,.17);border-radius:8px;padding:9px 13px;font-size:.84rem;color:#ffaaaa;line-height:1.5;}
-
-    /* Détails */
     .det-box{display:flex;flex-direction:column;gap:5px;}
     .det-lbl{font-size:.66rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.5px;}
     .det-txt{background:rgba(114,137,218,.06);border-left:3px solid rgba(114,137,218,.38);border-radius:0 8px 8px 0;padding:10px 13px;font-size:.84rem;color:rgba(255,255,255,.7);line-height:1.65;white-space:pre-wrap;word-break:break-word;}
-
-    /* Preuves */
     .proof-box{display:flex;flex-direction:column;gap:8px;}
     .proof-lbl{font-size:.66rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.5px;}
     .proof-grid{display:flex;flex-wrap:wrap;gap:10px;}
-
-    /* Image */
     .pimg{position:relative;width:108px;height:108px;border-radius:10px;overflow:hidden;border:1px solid rgba(114,137,218,.28);cursor:pointer;transition:transform .2s,box-shadow .2s;flex-shrink:0;}
     .pimg:hover{transform:scale(1.04);box-shadow:0 4px 16px rgba(114,137,218,.28);}
     .pimg img{width:100%;height:100%;object-fit:cover;}
     .pimg .zoom{position:absolute;inset:0;background:rgba(0,0,0,.42);display:flex;align-items:center;justify-content:center;font-size:1.4rem;opacity:0;transition:opacity .2s;}
     .pimg:hover .zoom{opacity:1;}
-
-    /* Vidéo */
-    .pvid{display:flex;flex-direction:column;gap:5px;width:100%;}
-    .pvid-lbl{font-size:.72rem;color:#a0b4ff;}
-    .pvid video{width:100%;max-width:420px;border-radius:10px;border:1px solid rgba(114,137,218,.28);background:#000;outline:none;}
-
-    /* Audio */
-    .paud{display:flex;flex-direction:column;gap:5px;}
-    .paud-lbl{font-size:.72rem;color:#a0b4ff;}
-    .paud audio{width:100%;max-width:360px;}
-
-    /* Actions */
     .actions{display:flex;gap:8px;flex-wrap:wrap;padding-top:2px;}
     .ab{font-size:.76rem;font-weight:700;padding:7px 15px;border-radius:8px;border:none;cursor:pointer;transition:filter .18s,transform .18s;}
     .ab:hover{filter:brightness(1.14);transform:translateY(-1px);}
     .ab-ok{background:rgba(46,204,113,.17);color:#6ee89f;border:1px solid rgba(46,204,113,.26);}
     .ab-del{background:rgba(231,76,60,.13);color:#ff8888;border:1px solid rgba(231,76,60,.22);}
-
     .empty{text-align:center;padding:46px 20px;color:rgba(255,255,255,.26);}
     .empty .ei{font-size:2.8rem;margin-bottom:10px;}
     .loading{text-align:center;padding:38px;color:rgba(255,255,255,.32);font-size:.88rem;}
@@ -217,117 +195,206 @@
   </div>
 
   <script>
-    const BIN_ID  = '6a2e8074f5f4af5e29ef92ea';
-    const API_KEY = '$2a$10$mSH7beQoI9sAGU8Vy4CW6ewo48q4s27aFwDYBYJBC0W4ZaNSD7NjO';
+    const BIN_ID  = '6a2fe4b1f5f4af5e29f4be76';
+    const API_KEY = '$2a$10$hWHiijv8F8n7mOz8OoZhuerFpM8aBOv9G0.bOa96iShozeI4f7MIW';
 
-    // Stars
+    // ── Stars ─────────────────────────────────────────────────────────────────
     const cv=document.getElementById('stars-canvas'),cx=cv.getContext('2d');let st=[];
     function rsz(){cv.width=innerWidth;cv.height=innerHeight;}
     function ist(){st=[];for(let i=0;i<220;i++)st.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*1.8+.3,s:Math.random()*6+.5,a:Math.random()*.6+.4});}
     function dst(){cx.clearRect(0,0,cv.width,cv.height);for(const s of st){s.y+=s.s;if(s.y>cv.height){s.y=0;s.x=Math.random()*cv.width;}cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);cx.fillStyle=`rgba(255,255,255,${s.a})`;cx.fill();}requestAnimationFrame(dst);}
     window.addEventListener('resize',()=>{rsz();ist();});rsz();ist();dst();
 
-    // Auth
-    let me=null;
-    function getUsers(){const r=localStorage.getItem('msk_users');if(r)return JSON.parse(r);const d=[{username:'admin',password:'misaki2026',role:'Super Admin'}];localStorage.setItem('msk_users',JSON.stringify(d));return d;}
-    function saveUsers(u){localStorage.setItem('msk_users',JSON.stringify(u));}
-    function doLogin(){
-      const u=document.getElementById('lu').value.trim();
-      const p=document.getElementById('lp').value;
-      const m=getUsers().find(x=>x.username===u&&x.password===p);
-      if(!m){document.getElementById('lerr').style.display='block';return;}
-      me=m;sessionStorage.setItem('msk_sess',JSON.stringify(m));openPanel();
-    }
-    function logout(){sessionStorage.removeItem('msk_sess');me=null;document.getElementById('panel').style.display='none';document.getElementById('login-screen').style.display='flex';}
-    function openPanel(){document.getElementById('login-screen').style.display='none';document.getElementById('panel').style.display='flex';document.getElementById('who').textContent='👤 '+me.username;loadReports();renderUsers();}
-    window.addEventListener('DOMContentLoaded',()=>{const s=sessionStorage.getItem('msk_sess');if(s){me=JSON.parse(s);openPanel();}});
+    // ── Auth ──────────────────────────────────────────────────────────────────
+    // Les comptes sont stockés dans le Bin JSONBin lui-même sous la clé __users__
+    // => partagés entre tous les navigateurs, pas de problème de localStorage
+    let me = null;
+    let reports = [];
 
-    // JSONBin
-    let reports=[];
-    async function loadReports(){
-      document.getElementById('rlist').innerHTML='<div class="loading">⏳ Chargement des reports...</div>';
-      try{
-        const r=await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`,{
-          headers:{'X-Master-Key':API_KEY,'X-Bin-Meta':'false'}
-        });
-        if(!r.ok) throw new Error('HTTP '+r.status);
-        const d=await r.json();
-        // JSONBin avec X-Bin-Meta:false retourne directement le record
-        const raw=Array.isArray(d)?d:(Array.isArray(d.record)?d.record:[]);
-        reports=raw.filter(x=>!x.init);
+    // Comptes par défaut (utilisés si aucun compte dans le Bin)
+    const DEFAULT_USERS = [{ username: 'admin', password: 'misaki2026', role: 'Super Admin' }];
+
+    async function getUsers() {
+      try {
+        const r = await apiFetch();
+        return r.__users__ || DEFAULT_USERS;
+      } catch { return DEFAULT_USERS; }
+    }
+
+    async function saveUsers(users) {
+      const r = await apiFetch();
+      r.__users__ = users;
+      await apiPut(r);
+    }
+
+    function doLogin() {
+      const u = document.getElementById('lu').value.trim();
+      const p = document.getElementById('lp').value;
+      const lerr = document.getElementById('lerr');
+      lerr.style.display = 'none';
+
+      // On charge les users depuis le Bin pour vérifier
+      getUsers().then(users => {
+        const found = users.find(x => x.username === u && x.password === p);
+        if (!found) { lerr.style.display = 'block'; return; }
+        me = found;
+        sessionStorage.setItem('msk_sess', JSON.stringify(found));
+        openPanel();
+      }).catch(() => {
+        lerr.style.display = 'block';
+      });
+    }
+
+    function logout() {
+      sessionStorage.removeItem('msk_sess');
+      me = null;
+      document.getElementById('panel').style.display = 'none';
+      document.getElementById('login-screen').style.display = 'flex';
+    }
+
+    function openPanel() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('panel').style.display = 'flex';
+      document.getElementById('who').textContent = '👤 ' + me.username;
+      loadReports();
+      renderUsers();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const s = sessionStorage.getItem('msk_sess');
+      if (s) { me = JSON.parse(s); openPanel(); }
+    });
+
+    // ── JSONBin helpers ───────────────────────────────────────────────────────
+    // Le Bin stocke un objet { reports: [...], __users__: [...] }
+    // pour séparer proprement les données
+
+    async function apiFetch() {
+      const r = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+        headers: { 'X-Master-Key': API_KEY, 'X-Bin-Meta': 'false' }
+      });
+      if (!r.ok) throw new Error('GET échoué : ' + r.status);
+      const d = await r.json();
+
+      // Compatibilité avec l'ancien format (tableau direct)
+      if (Array.isArray(d)) return { reports: d.filter(x => !x.init), __users__: DEFAULT_USERS };
+      if (Array.isArray(d.record)) return { reports: d.record.filter(x => !x.init), __users__: DEFAULT_USERS };
+      return d;
+    }
+
+    async function apiPut(data) {
+      const r = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+        body: JSON.stringify(data)
+      });
+      if (!r.ok) throw new Error('PUT échoué : ' + r.status);
+    }
+
+    // ── Chargement des reports ────────────────────────────────────────────────
+    async function loadReports() {
+      document.getElementById('rlist').innerHTML = '<div class="loading">⏳ Chargement des reports...</div>';
+      try {
+        const d = await apiFetch();
+        reports = Array.isArray(d.reports) ? d.reports : [];
         render();
-      }catch(e){
+      } catch(e) {
         console.error(e);
-        document.getElementById('rlist').innerHTML=`<div class="empty"><div class="ei">❌</div>Erreur : ${e.message}<br><small style="color:rgba(255,255,255,.3)">Vérifie que ton Bin est en Public sur jsonbin.io</small></div>`;
+        document.getElementById('rlist').innerHTML = `
+          <div class="empty">
+            <div class="ei">❌</div>
+            Erreur : ${e.message}<br>
+            <small style="color:rgba(255,255,255,.3)">Vérifie que ton Bin est en Public sur jsonbin.io</small>
+          </div>`;
       }
     }
-    async function saveBin(){
-      const r=await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`,{
-        method:'PUT',
-        headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},
-        body:JSON.stringify(reports)
-      });
-      if(!r.ok) throw new Error('Save failed: '+r.status);
+
+    async function saveBin() {
+      const d = await apiFetch();
+      d.reports = reports;
+      await apiPut(d);
     }
 
-    // Filter & render
-    let filt='all';
-    function setF(f,btn){filt=f;document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');render();}
-    function render(){
-      const pend=reports.filter(r=>r.status!=='done').length;
-      const res=reports.filter(r=>r.status==='done').length;
-      document.getElementById('st-tot').textContent=reports.length;
-      document.getElementById('st-pend').textContent=pend;
-      document.getElementById('st-res').textContent=res;
-      document.getElementById('bdg').textContent=pend;
-      let list=reports;
-      if(filt==='new')  list=reports.filter(r=>r.status!=='done');
-      if(filt==='done') list=reports.filter(r=>r.status==='done');
-      const el=document.getElementById('rlist');
-      if(!list.length){el.innerHTML=`<div class="empty"><div class="ei">📭</div>Aucun report${filt!=='all'?' dans cette catégorie':''} pour le moment.</div>`;return;}
-      el.innerHTML=list.slice().reverse().map(r=>{
-        const done=r.status==='done';
+    // ── Filtres & rendu ───────────────────────────────────────────────────────
+    let filt = 'all';
+    function setF(f, btn) {
+      filt = f;
+      document.querySelectorAll('.fb').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      render();
+    }
 
-        // Preuves
-        let proofsHtml='';
-        if(r.files&&r.files.length){
-          const items=r.files.map(f=>{
-            if(f.type.startsWith('image/')){
-              return `<div class="pimg" onclick="openLB('${f.data}')"><img src="${f.data}" alt="${f.name}"/><div class="zoom">🔍</div></div>`;
-            } else if(f.type.startsWith('video/')){
-              return `<div class="pvid"><div class="pvid-lbl">🎥 ${f.name}</div><video controls preload="metadata"><source src="${f.data}" type="${f.type}"/>Navigateur non compatible.</video></div>`;
-            } else {
-              return `<div class="paud"><div class="paud-lbl">🎙️ ${f.name}</div><audio controls><source src="${f.data}" type="${f.type}"/></audio></div>`;
+    function render() {
+      const pend = reports.filter(r => r.status !== 'done').length;
+      const res  = reports.filter(r => r.status === 'done').length;
+      document.getElementById('st-tot').textContent  = reports.length;
+      document.getElementById('st-pend').textContent = pend;
+      document.getElementById('st-res').textContent  = res;
+      document.getElementById('bdg').textContent     = pend;
+
+      let list = reports;
+      if (filt === 'new')  list = reports.filter(r => r.status !== 'done');
+      if (filt === 'done') list = reports.filter(r => r.status === 'done');
+
+      const el = document.getElementById('rlist');
+      if (!list.length) {
+        el.innerHTML = `<div class="empty"><div class="ei">📭</div>Aucun report${filt !== 'all' ? ' dans cette catégorie' : ''} pour le moment.</div>`;
+        return;
+      }
+
+      el.innerHTML = list.slice().reverse().map(r => {
+        const done = r.status === 'done';
+
+        // Preuves images
+        let proofsHtml = '';
+        if (r.files && r.files.length) {
+          const items = r.files.map(f => {
+            if (f.type && f.type.startsWith('image/')) {
+              return `<div class="pimg" onclick="openLB('${f.data}')">
+                        <img src="${f.data}" alt="${f.name}" loading="lazy"/>
+                        <div class="zoom">🔍</div>
+                      </div>`;
             }
+            return '';
           }).join('');
-          proofsHtml=`<div class="proof-box"><div class="proof-lbl">📎 Preuves (${r.files.length} fichier${r.files.length>1?'s':''})</div><div class="proof-grid">${items}</div></div>`;
+          if (items) {
+            proofsHtml = `<div class="proof-box">
+              <div class="proof-lbl">📎 Preuves (${r.files.length} fichier${r.files.length > 1 ? 's' : ''})</div>
+              <div class="proof-grid">${items}</div>
+            </div>`;
+          }
         }
 
         // Détails
-        const detHtml=r.details?`<div class="det-box"><div class="det-lbl">📝 Détails supplémentaires</div><div class="det-txt">${r.details.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div></div>`:'';
+        const detHtml = r.details
+          ? `<div class="det-box">
+               <div class="det-lbl">📝 Détails supplémentaires</div>
+               <div class="det-txt">${r.details.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+             </div>`
+          : '';
 
         return `
-        <div class="rcard${done?' done':''}" id="rc-${r.id}">
+        <div class="rcard${done ? ' done' : ''}" id="rc-${r.id}">
           <div class="rc-head">
             <div class="rc-meta">
               <div class="rc-id">Report #${r.id}</div>
               <div class="rc-date">📅 ${r.date}</div>
             </div>
-            <span class="sbadge ${done?'s-done':'s-new'}">${done?'✅ Résolu':'🔴 En attente'}</span>
+            <span class="sbadge ${done ? 's-done' : 's-new'}">${done ? '✅ Résolu' : '🔴 En attente'}</span>
           </div>
           <div class="rc-body">
             <div class="rfields">
-              <div class="rf"><div class="rf-l">@ Suspect</div><div class="rf-v">${r.suspectTag||'—'}</div></div>
-              <div class="rf"><div class="rf-l">ID Discord</div><div class="rf-v">${r.suspectId||'—'}</div></div>
-              <div class="rf"><div class="rf-l">Reporté par</div><div class="rf-v">${r.reporter||'—'}</div></div>
+              <div class="rf"><div class="rf-l">@ Suspect</div><div class="rf-v">${r.suspectTag || '—'}</div></div>
+              <div class="rf"><div class="rf-l">ID Discord</div><div class="rf-v">${r.suspectId || '—'}</div></div>
+              <div class="rf"><div class="rf-l">Reporté par</div><div class="rf-v">${r.reporter || '—'}</div></div>
             </div>
-            <div class="reason-box">❗ ${r.reason||'Non précisé'}</div>
+            <div class="reason-box">❗ ${r.reason || 'Non précisé'}</div>
             ${detHtml}
             ${proofsHtml}
             <div class="actions">
               ${!done
-                ?`<button class="ab ab-ok" onclick="resolveR('${r.id}')">✅ Marquer résolu</button>`
-                :`<button class="ab ab-ok" onclick="unresolveR('${r.id}')">🔄 Rouvrir</button>`}
+                ? `<button class="ab ab-ok" onclick="resolveR('${r.id}')">✅ Marquer résolu</button>`
+                : `<button class="ab ab-ok" onclick="unresolveR('${r.id}')">🔄 Rouvrir</button>`}
               <button class="ab ab-del" onclick="delR('${r.id}')">🗑️ Supprimer</button>
             </div>
           </div>
@@ -335,41 +402,75 @@
       }).join('');
     }
 
-    async function resolveR(id){try{const r=reports.find(x=>x.id===id);if(r){r.status='done';await saveBin();render();toast('✅ Marqué comme résolu !');}}catch(e){toast('❌ Erreur : '+e.message,true);}}
-    async function unresolveR(id){try{const r=reports.find(x=>x.id===id);if(r){r.status='new';await saveBin();render();toast('🔄 Report rouvert.');}}catch(e){toast('❌ Erreur : '+e.message,true);}}
-    async function delR(id){if(!confirm('Supprimer ce report définitivement ?'))return;try{reports=reports.filter(x=>x.id!==id);await saveBin();render();toast('🗑️ Report supprimé.');}catch(e){toast('❌ Erreur : '+e.message,true);}}
-    async function clearAll(){if(!confirm('Supprimer TOUS les reports ? Irréversible.'))return;try{reports=[];await saveBin();render();toast('🗑️ Tout effacé.');}catch(e){toast('❌ Erreur : '+e.message,true);}}
+    async function resolveR(id) {
+      try { const r = reports.find(x => x.id === id); if (r) { r.status = 'done'; await saveBin(); render(); toast('✅ Marqué comme résolu !'); } }
+      catch(e) { toast('❌ ' + e.message, true); }
+    }
+    async function unresolveR(id) {
+      try { const r = reports.find(x => x.id === id); if (r) { r.status = 'new'; await saveBin(); render(); toast('🔄 Report rouvert.'); } }
+      catch(e) { toast('❌ ' + e.message, true); }
+    }
+    async function delR(id) {
+      if (!confirm('Supprimer ce report définitivement ?')) return;
+      try { reports = reports.filter(x => x.id !== id); await saveBin(); render(); toast('🗑️ Report supprimé.'); }
+      catch(e) { toast('❌ ' + e.message, true); }
+    }
+    async function clearAll() {
+      if (!confirm('Supprimer TOUS les reports ? Action irréversible.')) return;
+      try { reports = []; await saveBin(); render(); toast('🗑️ Tout effacé.'); }
+      catch(e) { toast('❌ ' + e.message, true); }
+    }
 
-    // Lightbox
-    function openLB(src){document.getElementById('lb-img').src=src;document.getElementById('lightbox').classList.add('open');}
-    function closeLB(){document.getElementById('lightbox').classList.remove('open');}
+    // ── Lightbox ──────────────────────────────────────────────────────────────
+    function openLB(src) { document.getElementById('lb-img').src = src; document.getElementById('lightbox').classList.add('open'); }
+    function closeLB()   { document.getElementById('lightbox').classList.remove('open'); }
 
-    // Users
-    function renderUsers(){
-      document.getElementById('alist').innerHTML=getUsers().map((u,i)=>`
+    // ── Gestion utilisateurs ──────────────────────────────────────────────────
+    async function renderUsers() {
+      const users = await getUsers();
+      document.getElementById('alist').innerHTML = users.map((u, i) => `
         <div class="aitem">
-          <div class="aitem-info"><div class="aitem-name">👤 ${u.username}</div><div class="aitem-role">${u.role||'Modérateur'}</div></div>
-          ${u.username!==me.username?`<button class="ab-rm" onclick="removeUser(${i})">Retirer l'accès</button>`:`<span style="font-size:.68rem;color:rgba(255,255,255,.2);">Vous</span>`}
+          <div class="aitem-info">
+            <div class="aitem-name">👤 ${u.username}</div>
+            <div class="aitem-role">${u.role || 'Modérateur'}</div>
+          </div>
+          ${u.username !== me.username
+            ? `<button class="ab-rm" onclick="removeUser(${i})">Retirer l'accès</button>`
+            : `<span style="font-size:.68rem;color:rgba(255,255,255,.2);">Vous</span>`}
         </div>`).join('');
     }
-    function addUser(){
-      const u=document.getElementById('nu').value.trim(),p=document.getElementById('np').value.trim();
-      if(!u||!p){toast('Remplis les deux champs !',true);return;}
-      const users=getUsers();
-      if(users.find(x=>x.username===u)){toast('Cet utilisateur existe déjà !',true);return;}
-      users.push({username:u,password:p,role:'Modérateur'});saveUsers(users);
-      document.getElementById('nu').value='';document.getElementById('np').value='';
-      renderUsers();toast('✅ Accès ajouté pour '+u+' !');
-    }
-    function removeUser(i){
-      const users=getUsers();
-      if(users[i].username===me.username){toast('Impossible de vous retirer vous-même !',true);return;}
-      if(!confirm(`Retirer l'accès de "${users[i].username}" ?`))return;
-      users.splice(i,1);saveUsers(users);renderUsers();toast('🚫 Accès retiré.');
+
+    async function addUser() {
+      const u = document.getElementById('nu').value.trim();
+      const p = document.getElementById('np').value.trim();
+      if (!u || !p) { toast('Remplis les deux champs !', true); return; }
+      const users = await getUsers();
+      if (users.find(x => x.username === u)) { toast('Cet utilisateur existe déjà !', true); return; }
+      users.push({ username: u, password: p, role: 'Modérateur' });
+      await saveUsers(users);
+      document.getElementById('nu').value = '';
+      document.getElementById('np').value = '';
+      renderUsers();
+      toast('✅ Accès ajouté pour ' + u + ' !');
     }
 
-    // Toast
-    function toast(m,err=false){const t=document.getElementById('toast');t.textContent=m;t.className='toast'+(err?' error':'')+' show';setTimeout(()=>{t.className='toast'+(err?' error':'');},3200);}
+    async function removeUser(i) {
+      const users = await getUsers();
+      if (users[i].username === me.username) { toast('Impossible de vous retirer vous-même !', true); return; }
+      if (!confirm(`Retirer l'accès de "${users[i].username}" ?`)) return;
+      users.splice(i, 1);
+      await saveUsers(users);
+      renderUsers();
+      toast('🚫 Accès retiré.');
+    }
+
+    // ── Toast ─────────────────────────────────────────────────────────────────
+    function toast(m, err = false) {
+      const t = document.getElementById('toast');
+      t.textContent = m;
+      t.className = 'toast' + (err ? ' error' : '') + ' show';
+      setTimeout(() => { t.className = 'toast' + (err ? ' error' : ''); }, 3200);
+    }
   </script>
 </body>
 </html>
