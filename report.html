@@ -32,15 +32,16 @@
     .fz-text{font-size:.86rem;color:rgba(255,255,255,.48);text-align:center;}
     .fz-text strong{color:#a0b4ff;}
     .fz-hint{font-size:.7rem;color:rgba(255,255,255,.26);}
+    .fz-note{font-size:.68rem;color:rgba(255,150,150,.5);text-align:center;margin-top:2px;}
     .previews{display:flex;flex-wrap:wrap;gap:8px;}
     .pthumb{position:relative;width:82px;height:82px;border-radius:9px;overflow:hidden;border:1px solid rgba(114,137,218,.3);flex-shrink:0;}
     .pthumb img{width:100%;height:100%;object-fit:cover;}
-    .ptag{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:rgba(114,137,218,.14);font-size:.62rem;color:#c5d0ff;text-align:center;padding:4px;word-break:break-all;}
-    .ptag span:first-child{font-size:1.5rem;}
     .rm{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.75);color:#ff6b6b;border:none;border-radius:50%;width:18px;height:18px;font-size:.68rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
     .submit-btn{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;font-size:1rem;font-weight:800;padding:14px;border-radius:12px;border:none;cursor:pointer;width:100%;transition:transform .18s,filter .18s;display:flex;align-items:center;justify-content:center;gap:10px;}
     .submit-btn:hover{transform:translateY(-2px);filter:brightness(1.12);}
-    .submit-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;}
+    .submit-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;filter:none;}
+    .progress{width:100%;background:rgba(255,255,255,.08);border-radius:8px;height:6px;overflow:hidden;display:none;}
+    .progress-bar{height:100%;background:linear-gradient(90deg,#5865f2,#7289da);border-radius:8px;transition:width .3s;}
     .back-btn{display:inline-flex;align-items:center;gap:8px;align-self:center;background:linear-gradient(135deg,#5865f2,#7289da);color:#fff;font-size:.86rem;font-weight:700;padding:11px 22px;border-radius:10px;text-decoration:none;transition:transform .18s,filter .18s;}
     .back-btn:hover{transform:translateY(-2px);filter:brightness(1.12);}
     .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(80px);background:#2ecc71;color:#fff;font-weight:700;padding:11px 24px;border-radius:12px;font-size:.9rem;z-index:999;transition:transform .4s;box-shadow:0 4px 20px rgba(0,0,0,.4);white-space:nowrap;}
@@ -91,15 +92,17 @@
         <textarea id="f-details" placeholder="Heure, salon vocal, comportement exact, mots utilisés..."></textarea>
       </div>
       <div class="field">
-        <label>Preuves <span class="req">*</span> <span style="font-weight:400;color:rgba(255,255,255,.3);font-size:.7rem;text-transform:none;">(images, vidéos, audio)</span></label>
+        <label>Preuves <span class="req">*</span> <span style="font-weight:400;color:rgba(255,255,255,.3);font-size:.7rem;text-transform:none;">(images)</span></label>
         <div class="file-zone" id="fzone">
-          <input type="file" id="finput" accept="image/*,video/*,audio/*" multiple />
+          <input type="file" id="finput" accept="image/*" multiple />
           <div class="fz-icon">📎</div>
           <div class="fz-text"><strong>Cliquer</strong> ou glisser ici</div>
-          <div class="fz-hint">Images · Vidéos · Enregistrements</div>
+          <div class="fz-hint">Toutes tailles acceptées — compressées automatiquement</div>
         </div>
+        <div class="fz-note" id="fz-count"></div>
         <div class="previews" id="previews"></div>
       </div>
+      <div class="progress" id="progress"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
       <button class="submit-btn" id="sbtn" onclick="submitReport()">⛔ Envoyer le report</button>
     </div>
     <a href="index.html" class="back-btn">← Retour à l'accueil</a>
@@ -112,64 +115,194 @@
     const BIN_ID  = '6a2e8074f5f4af5e29ef92ea';
     const API_KEY = '$2a$10$mSH7beQoI9sAGU8Vy4CW6ewo48q4s27aFwDYBYJBC0W4ZaNSD7NjO';
 
-    // Stars
+    // ── Stars ──────────────────────────────────────────────────────────────────
     const cv=document.getElementById('stars-canvas'),cx=cv.getContext('2d');let st=[];
     function rsz(){cv.width=innerWidth;cv.height=innerHeight;}
     function ist(){st=[];for(let i=0;i<220;i++)st.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*1.8+.3,s:Math.random()*6+.5,a:Math.random()*.6+.4});}
     function dst(){cx.clearRect(0,0,cv.width,cv.height);for(const s of st){s.y+=s.s;if(s.y>cv.height){s.y=0;s.x=Math.random()*cv.width;}cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);cx.fillStyle=`rgba(255,255,255,${s.a})`;cx.fill();}requestAnimationFrame(dst);}
     window.addEventListener('resize',()=>{rsz();ist();});rsz();ist();dst();
 
-    // Files
-    let files=[];
-    const fi=document.getElementById('finput'),fz=document.getElementById('fzone');
-    fi.addEventListener('change',()=>{addF(fi.files);fi.value='';});
-    fz.addEventListener('dragover',e=>{e.preventDefault();fz.classList.add('over');});
-    fz.addEventListener('dragleave',()=>fz.classList.remove('over'));
-    fz.addEventListener('drop',e=>{e.preventDefault();fz.classList.remove('over');addF(e.dataTransfer.files);});
-    function addF(list){for(const f of list)if(!files.find(x=>x.name===f.name&&x.size===f.size))files.push(f);renderF();}
-    function renderF(){
-      const p=document.getElementById('previews');p.innerHTML='';
-      files.forEach((f,i)=>{
-        const d=document.createElement('div');d.className='pthumb';
-        if(f.type.startsWith('image/')){d.innerHTML=`<img src="${URL.createObjectURL(f)}"/><button class="rm" onclick="remF(${i})">✕</button>`;}
-        else{const ico=f.type.startsWith('video/')?'🎥':'🎙️';d.innerHTML=`<div class="ptag"><span>${ico}</span><span>${f.name.slice(0,14)}</span></div><button class="rm" onclick="remF(${i})">✕</button>`;}
-        p.appendChild(d);
+    // ── Compression image ─────────────────────────────────────────────────────
+    // Redimensionne à max 800px et compresse en JPEG 60%
+    // => une image de 5MB devient ~20-40KB
+    function compressImage(file) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+          const MAX = 800;
+          let w = img.width, h = img.height;
+          if (w > MAX || h > MAX) {
+            if (w >= h) { h = Math.round(h * MAX / w); w = MAX; }
+            else        { w = Math.round(w * MAX / h); h = MAX; }
+          }
+          const c = document.createElement('canvas');
+          c.width = w; c.height = h;
+          c.getContext('2d').drawImage(img, 0, 0, w, h);
+          resolve({
+            name: file.name.replace(/\.[^.]+$/, '.jpg'),
+            type: 'image/jpeg',
+            data: c.toDataURL('image/jpeg', 0.60)
+          });
+        };
+        img.onerror = () => reject(new Error('Impossible de lire : ' + file.name));
+        img.src = url;
       });
     }
-    function remF(i){files.splice(i,1);renderF();}
 
-    // Toast
-    function toast(m,err=false){const t=document.getElementById('toast');t.textContent=m;t.className='toast'+(err?' error':'')+' show';setTimeout(()=>{t.className='toast'+(err?' error':'');},3500);}
+    // ── Gestion fichiers ──────────────────────────────────────────────────────
+    let files = [];
+    const fi = document.getElementById('finput');
+    const fz = document.getElementById('fzone');
 
-    // Submit
-    async function submitReport(){
-      const tag=document.getElementById('f-tag').value.trim();
-      const sid=document.getElementById('f-id').value.trim();
-      const rep=document.getElementById('f-reporter').value.trim();
-      const rsn=document.getElementById('f-reason').value;
-      const det=document.getElementById('f-details').value.trim();
-      if(!tag||!sid||!rep||!rsn){toast('⚠️ Remplis tous les champs obligatoires !',true);return;}
-      if(!files.length){toast('⚠️ Ajoute au moins une preuve !',true);return;}
-      const btn=document.getElementById('sbtn');
-      btn.disabled=true;btn.textContent='⏳ Envoi en cours...';
-      try{
-        const fdata=await Promise.all(files.map(f=>new Promise(res=>{const r=new FileReader();r.onload=()=>res({name:f.name,type:f.type,data:r.result});r.readAsDataURL(f);})));
-        // GET
-        const g=await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`,{headers:{'X-Master-Key':API_KEY,'X-Bin-Meta':false}});
-        if(!g.ok)throw new Error('GET failed: '+g.status);
-        const gd=await g.json();
-        let reps=Array.isArray(gd)?gd:Array.isArray(gd.record)?gd.record:[];
-        reps=reps.filter(x=>!x.init);
-        reps.push({id:Date.now().toString(),date:new Date().toLocaleString('fr-FR'),suspectTag:tag,suspectId:sid,reporter:rep,reason:rsn,details:det,files:fdata,status:'new'});
-        // PUT
-        const p=await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},body:JSON.stringify(reps)});
-        if(!p.ok)throw new Error('PUT failed: '+p.status);
+    fi.addEventListener('change', () => { addFiles(fi.files); fi.value = ''; });
+    fz.addEventListener('dragover',  e => { e.preventDefault(); fz.classList.add('over'); });
+    fz.addEventListener('dragleave', () => fz.classList.remove('over'));
+    fz.addEventListener('drop', e => {
+      e.preventDefault(); fz.classList.remove('over');
+      addFiles(e.dataTransfer.files);
+    });
+
+    function addFiles(list) {
+      let rejected = 0;
+      for (const f of list) {
+        if (!f.type.startsWith('image/')) { rejected++; continue; }
+        if (!files.find(x => x.name === f.name && x.size === f.size)) files.push(f);
+      }
+      if (rejected) toast(`⚠️ ${rejected} fichier(s) ignoré(s) — images uniquement.`, true);
+      renderPreviews();
+    }
+
+    function renderPreviews() {
+      const p = document.getElementById('previews');
+      p.innerHTML = '';
+      files.forEach((f, i) => {
+        const d = document.createElement('div');
+        d.className = 'pthumb';
+        const url = URL.createObjectURL(f);
+        d.innerHTML = `<img src="${url}"/><button class="rm" onclick="remFile(${i})">✕</button>`;
+        p.appendChild(d);
+      });
+      const cnt = document.getElementById('fz-count');
+      cnt.textContent = files.length
+        ? `${files.length} image${files.length > 1 ? 's' : ''} sélectionnée${files.length > 1 ? 's' : ''} — compressées avant envoi`
+        : '';
+    }
+
+    function remFile(i) { files.splice(i, 1); renderPreviews(); }
+
+    // ── Toast ─────────────────────────────────────────────────────────────────
+    function toast(m, err = false) {
+      const t = document.getElementById('toast');
+      t.textContent = m;
+      t.className = 'toast' + (err ? ' error' : '') + ' show';
+      setTimeout(() => { t.className = 'toast' + (err ? ' error' : ''); }, 3500);
+    }
+
+    // ── Progress ──────────────────────────────────────────────────────────────
+    function setProgress(pct, label) {
+      const wrap = document.getElementById('progress');
+      const bar  = document.getElementById('progress-bar');
+      const btn  = document.getElementById('sbtn');
+      if (pct === null) { wrap.style.display = 'none'; bar.style.width = '0%'; return; }
+      wrap.style.display = 'block';
+      bar.style.width = pct + '%';
+      btn.textContent = label;
+    }
+
+    // ── Envoi ─────────────────────────────────────────────────────────────────
+    async function submitReport() {
+      const tag = document.getElementById('f-tag').value.trim();
+      const sid = document.getElementById('f-id').value.trim();
+      const rep = document.getElementById('f-reporter').value.trim();
+      const rsn = document.getElementById('f-reason').value;
+      const det = document.getElementById('f-details').value.trim();
+
+      if (!tag || !sid || !rep || !rsn) {
+        toast('⚠️ Remplis tous les champs obligatoires !', true); return;
+      }
+      if (!files.length) {
+        toast('⚠️ Ajoute au moins une preuve !', true); return;
+      }
+
+      const btn = document.getElementById('sbtn');
+      btn.disabled = true;
+
+      try {
+        // 1. Compression
+        setProgress(10, '⏳ Compression des images…');
+        const compressed = [];
+        for (let i = 0; i < files.length; i++) {
+          compressed.push(await compressImage(files[i]));
+          setProgress(10 + Math.round((i + 1) / files.length * 40), '⏳ Compression des images…');
+        }
+
+        // 2. Récupération des reports existants
+        setProgress(55, '⏳ Récupération des données…');
+        const g = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+          headers: {
+            'X-Master-Key': API_KEY,
+            'X-Bin-Meta': 'false'
+          }
+        });
+        if (!g.ok) throw new Error(`Erreur GET ${g.status} — vérifie que le Bin est en Public sur jsonbin.io`);
+
+        const raw = await g.json();
+        // JSONBin avec X-Bin-Meta:false renvoie directement le contenu
+        let reps = Array.isArray(raw) ? raw
+                 : Array.isArray(raw.record) ? raw.record
+                 : [];
+        reps = reps.filter(x => !x.init);
+
+        // 3. Ajout du nouveau report
+        reps.push({
+          id:         Date.now().toString(),
+          date:       new Date().toLocaleString('fr-FR'),
+          suspectTag: tag,
+          suspectId:  sid,
+          reporter:   rep,
+          reason:     rsn,
+          details:    det,
+          files:      compressed,
+          status:     'new'
+        });
+
+        // 4. Vérification taille
+        const payload = JSON.stringify(reps);
+        const sizeKB  = Math.round(payload.length / 1024);
+        if (sizeKB > 95) {
+          throw new Error(`Payload trop lourd (${sizeKB} KB / 100 KB max). Réduis le nombre d'images.`);
+        }
+
+        // 5. Sauvegarde
+        setProgress(75, '⏳ Envoi en cours…');
+        const p = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+          method:  'PUT',
+          headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+          body:    payload
+        });
+        if (!p.ok) throw new Error(`Erreur PUT ${p.status}`);
+
+        setProgress(100, '✅ Report envoyé !');
         toast('✅ Report envoyé avec succès !');
-        ['f-tag','f-id','f-reporter','f-details'].forEach(id=>document.getElementById(id).value='');
-        document.getElementById('f-reason').value='';
-        files=[];renderF();
-      }catch(e){console.error(e);toast('❌ Erreur : '+e.message,true);}
-      btn.disabled=false;btn.innerHTML='⛔ Envoyer le report';
+
+        // Reset
+        setTimeout(() => {
+          ['f-tag','f-id','f-reporter','f-details'].forEach(id => document.getElementById(id).value = '');
+          document.getElementById('f-reason').value = '';
+          files = []; renderPreviews();
+          setProgress(null, '');
+        }, 1200);
+
+      } catch(e) {
+        console.error(e);
+        toast('❌ ' + e.message, true);
+        setProgress(null, '');
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = '⛔ Envoyer le report';
     }
   </script>
 </body>
