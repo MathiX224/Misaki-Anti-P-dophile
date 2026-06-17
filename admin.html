@@ -100,6 +100,20 @@
     .lightbox img{max-width:92vw;max-height:88vh;border-radius:10px;}
     .lb-close{position:absolute;top:16px;right:22px;font-size:2rem;color:#fff;cursor:pointer;background:none;border:none;}
 
+    /* Liste suspects */
+    .suspects-card{background:rgba(255,255,255,.03);border:1px solid rgba(231,76,60,.2);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:13px;}
+    .suspects-title{font-size:1.02rem;font-weight:900;color:#ff6b6b;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+    .suspects-title span{font-size:.72rem;font-weight:700;background:rgba(231,76,60,.2);color:#ff8888;border:1px solid rgba(231,76,60,.3);padding:2px 10px;border-radius:20px;}
+    .suspect-list{display:flex;flex-direction:column;gap:8px;}
+    .suspect-item{display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(231,76,60,.05);border:1px solid rgba(231,76,60,.15);border-radius:10px;padding:11px 15px;transition:border-color .2s;}
+    .suspect-item:hover{border-color:rgba(231,76,60,.35);}
+    .suspect-left{display:flex;flex-direction:column;gap:3px;min-width:0;}
+    .suspect-tag{font-size:.92rem;font-weight:800;color:#ffcccc;word-break:break-all;}
+    .suspect-id{font-size:.68rem;color:rgba(255,255,255,.3);font-family:monospace;word-break:break-all;}
+    .suspect-count{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+    .count-badge{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;font-size:.82rem;font-weight:900;padding:5px 13px;border-radius:20px;white-space:nowrap;}
+    .suspects-empty{text-align:center;padding:24px;color:rgba(255,255,255,.26);font-size:.84rem;}
+
     /* Accès */
     .access-card{background:rgba(255,255,255,.03);border:1px solid rgba(114,137,218,.13);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:13px;}
     .access-title{font-size:.88rem;font-weight:800;color:#a0b4ff;}
@@ -113,22 +127,6 @@
     .add-row input{flex:1;min-width:135px;background:rgba(255,255,255,.06);border:1px solid rgba(114,137,218,.26);border-radius:8px;color:#fff;font-family:inherit;font-size:.84rem;padding:9px 12px;outline:none;}
     .add-row input:focus{border-color:#7289da;}
     .ab-add{background:linear-gradient(135deg,#5865f2,#7289da);color:#fff;font-size:.82rem;font-weight:700;padding:9px 16px;border-radius:8px;border:none;cursor:pointer;white-space:nowrap;}
-
-    /* ── Liste suspects ── */
-    .suspects-card{background:rgba(255,255,255,.03);border:1px solid rgba(231,76,60,.2);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:13px;}
-    .suspects-title{font-size:1.05rem;font-weight:900;color:#ff6b6b;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
-    .suspects-title span{font-size:.72rem;font-weight:700;background:rgba(231,76,60,.2);color:#ff8888;border:1px solid rgba(231,76,60,.3);padding:2px 10px;border-radius:20px;}
-    .suspect-list{display:flex;flex-direction:column;gap:8px;}
-    .suspect-item{display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(231,76,60,.05);border:1px solid rgba(231,76,60,.15);border-radius:10px;padding:11px 15px;transition:border-color .2s;}
-    .suspect-item:hover{border-color:rgba(231,76,60,.35);}
-    .suspect-item:nth-child(1){border-color:rgba(255,100,50,.4);background:rgba(255,80,30,.08);}
-    .suspect-left{display:flex;flex-direction:column;gap:3px;}
-    .suspect-tag{font-size:.92rem;font-weight:800;color:#ffcccc;}
-    .suspect-id{font-size:.68rem;color:rgba(255,255,255,.3);font-family:monospace;}
-    .suspect-count{display:flex;align-items:center;gap:6px;flex-shrink:0;}
-    .count-badge{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;font-size:.82rem;font-weight:900;padding:5px 13px;border-radius:20px;white-space:nowrap;}
-    .count-label{font-size:.68rem;color:rgba(255,255,255,.3);}
-    .suspects-empty{text-align:center;padding:24px;color:rgba(255,255,255,.26);font-size:.84rem;}
 
     .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#2ecc71;color:#fff;font-weight:700;padding:10px 22px;border-radius:10px;font-size:.88rem;z-index:9998;transition:transform .4s;box-shadow:0 4px 20px rgba(0,0,0,.4);white-space:nowrap;}
     .toast.error{background:#e74c3c;}
@@ -193,7 +191,7 @@
       </div>
       <div class="rlist" id="rlist"><div class="loading">⏳ Chargement...</div></div>
 
-      <div class="stitle" style="margin-top:4px;">🚨 Liste des potentiels pédophiles</div>
+      <div class="stitle" style="margin-top:4px;">🚨 Liste des suspects</div>
       <div class="suspects-card">
         <div class="suspects-title">⚠️ LISTE DES POTENTIELS PÉDOPHILES <span id="suspects-count">0</span></div>
         <div class="suspect-list" id="suspect-list"><div class="suspects-empty">Aucun suspect pour le moment.</div></div>
@@ -217,8 +215,8 @@
   </div>
 
   <script>
-    const BIN_ID  = '6a2e8074f5f4af5e29ef92ea';
-    const API_KEY = '$2a$10$mSH7beQoI9sAGU8Vy4CW6ewo48q4s27aFwDYBYJBC0W4ZaNSD7NjO';
+    const BIN_ID  = '6a2fe4b1f5f4af5e29f4be76';
+    const API_KEY = '$2a$10$hWHiijv8F8n7mOz8OoZhuerFpM8aBOv9G0.bOa96iShozeI4f7MIW';
 
     // ── Stars ─────────────────────────────────────────────────────────────────
     const cv=document.getElementById('stars-canvas'),cx=cv.getContext('2d');let st=[];
@@ -228,25 +226,25 @@
     window.addEventListener('resize',()=>{rsz();ist();});rsz();ist();dst();
 
     // ── Auth ──────────────────────────────────────────────────────────────────
-    // Les comptes sont stockés dans le Bin JSONBin lui-même sous la clé __users__
+    // Les comptes sont stockés dans le Bin JSONBin lui-même (clé __users__)
     // => partagés entre tous les navigateurs, pas de problème de localStorage
     let me = null;
     let reports = [];
+    let suspects = []; // liste persistante { id, tag, count, reportIds }
 
-    // Comptes par défaut (utilisés si aucun compte dans le Bin)
     const DEFAULT_USERS = [{ username: 'admin', password: 'misaki2026', role: 'Super Admin' }];
 
     async function getUsers() {
       try {
-        const r = await apiFetch();
-        return r.__users__ || DEFAULT_USERS;
+        const d = await apiFetch();
+        return d.__users__ && d.__users__.length ? d.__users__ : DEFAULT_USERS;
       } catch { return DEFAULT_USERS; }
     }
 
     async function saveUsers(users) {
-      const r = await apiFetch();
-      r.__users__ = users;
-      await apiPut(r);
+      const d = await apiFetch();
+      d.__users__ = users;
+      await apiPut(d);
     }
 
     function doLogin() {
@@ -255,14 +253,15 @@
       const lerr = document.getElementById('lerr');
       lerr.style.display = 'none';
 
-      // On charge les users depuis le Bin pour vérifier
       getUsers().then(users => {
         const found = users.find(x => x.username === u && x.password === p);
         if (!found) { lerr.style.display = 'block'; return; }
         me = found;
         sessionStorage.setItem('msk_sess', JSON.stringify(found));
         openPanel();
-      }).catch(() => {
+      }).catch(e => {
+        console.error(e);
+        lerr.textContent = '❌ Erreur de connexion au serveur.';
         lerr.style.display = 'block';
       });
     }
@@ -288,9 +287,7 @@
     });
 
     // ── JSONBin helpers ───────────────────────────────────────────────────────
-    // Le Bin stocke un objet { reports: [...], __users__: [...] }
-    // pour séparer proprement les données
-
+    // Le Bin stocke : { reports: [...], __users__: [...], __suspects__: [...] }
     async function apiFetch() {
       const r = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
         headers: { 'X-Master-Key': API_KEY, 'X-Bin-Meta': 'false' }
@@ -298,9 +295,16 @@
       if (!r.ok) throw new Error('GET échoué : ' + r.status);
       const d = await r.json();
 
-      // Compatibilité avec l'ancien format (tableau direct)
-      if (Array.isArray(d)) return { reports: d.filter(x => !x.init), __users__: DEFAULT_USERS };
-      if (Array.isArray(d.record)) return { reports: d.record.filter(x => !x.init), __users__: DEFAULT_USERS };
+      // Compatibilité avec l'ancien format (tableau direct de reports)
+      if (Array.isArray(d)) {
+        return { reports: d.filter(x => !x.init), __users__: DEFAULT_USERS, __suspects__: [] };
+      }
+      if (Array.isArray(d.record)) {
+        return { reports: d.record.filter(x => !x.init), __users__: DEFAULT_USERS, __suspects__: [] };
+      }
+      d.reports = Array.isArray(d.reports) ? d.reports : [];
+      d.__users__ = Array.isArray(d.__users__) && d.__users__.length ? d.__users__ : DEFAULT_USERS;
+      d.__suspects__ = Array.isArray(d.__suspects__) ? d.__suspects__ : [];
       return d;
     }
 
@@ -313,13 +317,17 @@
       if (!r.ok) throw new Error('PUT échoué : ' + r.status);
     }
 
-    // ── Chargement des reports ────────────────────────────────────────────────
+    // ── Chargement ────────────────────────────────────────────────────────────
     async function loadReports() {
       document.getElementById('rlist').innerHTML = '<div class="loading">⏳ Chargement des reports...</div>';
       try {
         const d = await apiFetch();
-        reports = Array.isArray(d.reports) ? d.reports : [];
+        reports  = d.reports;
+        suspects = d.__suspects__;
+        updateSuspects(); // fusionne les nouveaux reports dans la liste persistante
         render();
+        // Sauvegarde si la liste de suspects a évolué
+        await saveBin();
       } catch(e) {
         console.error(e);
         document.getElementById('rlist').innerHTML = `
@@ -334,10 +342,55 @@
     async function saveBin() {
       const d = await apiFetch();
       d.reports = reports;
+      d.__suspects__ = suspects;
       await apiPut(d);
     }
 
-    // ── Filtres & rendu ───────────────────────────────────────────────────────
+    // ── Liste des suspects (PERSISTANTE — ne disparaît pas si on supprime un report) ──
+    function updateSuspects() {
+      const byId = {};
+      for (const s of suspects) {
+        if (!s.reportIds) s.reportIds = [];
+        byId[s.id] = s;
+      }
+
+      for (const r of reports) {
+        const key = r.suspectId || 'inconnu';
+        if (!byId[key]) {
+          byId[key] = { id: key, tag: r.suspectTag || '—', count: 0, reportIds: [] };
+          suspects.push(byId[key]);
+        }
+        const entry = byId[key];
+        // On ne compte un report qu'une seule fois (par son id unique)
+        if (!entry.reportIds.includes(r.id)) {
+          entry.reportIds.push(r.id);
+          entry.count++;
+        }
+        if (r.suspectTag) entry.tag = r.suspectTag;
+      }
+    }
+
+    function renderSuspects() {
+      const sorted = suspects.slice().sort((a, b) => b.count - a.count);
+      const el = document.getElementById('suspect-list');
+      document.getElementById('suspects-count').textContent = sorted.length;
+      if (!sorted.length) {
+        el.innerHTML = '<div class="suspects-empty">Aucun suspect pour le moment.</div>';
+        return;
+      }
+      el.innerHTML = sorted.map(s => `
+        <div class="suspect-item">
+          <div class="suspect-left">
+            <div class="suspect-tag">${s.tag}</div>
+            <div class="suspect-id">ID Discord : ${s.id}</div>
+          </div>
+          <div class="suspect-count">
+            <div class="count-badge">🔴 ${s.count} report${s.count > 1 ? 's' : ''}</div>
+          </div>
+        </div>`).join('');
+    }
+
+    // ── Filtres & rendu reports ───────────────────────────────────────────────
     let filt = 'all';
     function setF(f, btn) {
       filt = f;
@@ -354,6 +407,8 @@
       document.getElementById('st-res').textContent  = res;
       document.getElementById('bdg').textContent     = pend;
 
+      renderSuspects();
+
       let list = reports;
       if (filt === 'new')  list = reports.filter(r => r.status !== 'done');
       if (filt === 'done') list = reports.filter(r => r.status === 'done');
@@ -364,11 +419,9 @@
         return;
       }
 
-      renderSuspects();
       el.innerHTML = list.slice().reverse().map(r => {
         const done = r.status === 'done';
 
-        // Preuves images
         let proofsHtml = '';
         if (r.files && r.files.length) {
           const items = r.files.map(f => {
@@ -388,7 +441,6 @@
           }
         }
 
-        // Détails
         const detHtml = r.details
           ? `<div class="det-box">
                <div class="det-lbl">📝 Détails supplémentaires</div>
@@ -425,34 +477,7 @@
       }).join('');
     }
 
-    function renderSuspects() {
-      // Regrouper les reports par suspectId
-      const map = {};
-      for (const r of reports) {
-        const key = r.suspectId || 'inconnu';
-        if (!map[key]) map[key] = { id: key, tag: r.suspectTag || '—', count: 0 };
-        map[key].count++;
-        // Garder le @ le plus récent
-        if (r.suspectTag) map[key].tag = r.suspectTag;
-      }
-      const suspects = Object.values(map).sort((a, b) => b.count - a.count);
-      const el = document.getElementById('suspect-list');
-      document.getElementById('suspects-count').textContent = suspects.length;
-      if (!suspects.length) {
-        el.innerHTML = '<div class="suspects-empty">Aucun suspect pour le moment.</div>';
-        return;
-      }
-      el.innerHTML = suspects.map((s, i) => `
-        <div class="suspect-item">
-          <div class="suspect-left">
-            <div class="suspect-tag">${s.tag}</div>
-            <div class="suspect-id">ID : ${s.id}</div>
-          </div>
-          <div class="suspect-count">
-            <div class="count-badge">🔴 ${s.count} report${s.count > 1 ? 's' : ''}</div>
-          </div>
-        </div>`).join('');
-    }
+    async function resolveR(id) {
       try { const r = reports.find(x => x.id === id); if (r) { r.status = 'done'; await saveBin(); render(); toast('✅ Marqué comme résolu !'); } }
       catch(e) { toast('❌ ' + e.message, true); }
     }
@@ -461,13 +486,19 @@
       catch(e) { toast('❌ ' + e.message, true); }
     }
     async function delR(id) {
-      if (!confirm('Supprimer ce report définitivement ?')) return;
-      try { reports = reports.filter(x => x.id !== id); await saveBin(); render(); toast('🗑️ Report supprimé.'); }
-      catch(e) { toast('❌ ' + e.message, true); }
+      // Supprime le report MAIS garde l'entrée dans `suspects` (liste persistante)
+      if (!confirm('Supprimer ce report définitivement ? Le suspect restera listé ci-dessous.')) return;
+      try {
+        reports = reports.filter(x => x.id !== id);
+        await saveBin();
+        render();
+        toast('🗑️ Report supprimé. Le suspect reste listé.');
+      } catch(e) { toast('❌ ' + e.message, true); }
     }
     async function clearAll() {
-      if (!confirm('Supprimer TOUS les reports ? Action irréversible.')) return;
-      try { reports = []; await saveBin(); render(); toast('🗑️ Tout effacé.'); }
+      // Vide les reports MAIS garde la liste des suspects
+      if (!confirm('Supprimer TOUS les reports ? Action irréversible. La liste des suspects sera conservée.')) return;
+      try { reports = []; await saveBin(); render(); toast('🗑️ Tous les reports ont été effacés. Suspects conservés.'); }
       catch(e) { toast('❌ ' + e.message, true); }
     }
 
